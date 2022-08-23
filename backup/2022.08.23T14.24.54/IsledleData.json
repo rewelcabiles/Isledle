@@ -1,0 +1,34 @@
+{
+	"resource_data": [
+		"wood",
+		"stone",
+		"bat guano"
+	],
+	"flag_data": {
+		"intro_1": false
+	},
+	"log_data": {
+		"intro_1": {
+			"id": "intro_1",
+			"text": "You wake in the night",
+			"options": [
+				{
+					"label": "Step outside",
+					"actions": [
+						"incrementWood_2"
+					]
+				}
+			]
+		}
+	},
+	"action_data": {
+		"incrementWood_2": {
+			"id": "incrementWood_2",
+			"type": "incrementResource",
+			"args": {
+				"resource": "wood",
+				"amount": 2
+			}
+		}
+	}
+}

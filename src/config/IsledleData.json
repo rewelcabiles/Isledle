@@ -10,24 +10,78 @@
 	"log_data": {
 		"intro_1": {
 			"id": "intro_1",
-			"text": "You wake in the night",
+			"text": "You wake in the night...",
 			"options": [
 				{
 					"label": "Step outside",
 					"actions": [
-						"incrementWood_2"
+						"log_action_intro_2"
+					]
+				}
+			]
+		},
+		"intro_2": {
+			"id": "intro_2",
+			"text": "Light bleeds into the sky...",
+			"options": [
+				{
+					"label": "Look around",
+					"actions": [
+						"log_action_intro_3",
+						"set_flag_intro_1_true"
+					]
+				}
+			]
+		},
+		"intro_3": {
+			"id": "intro_3",
+			"text": "The campfire has died... your stock of firewood runs low.",
+			"options": [
+				{
+					"label": "Do something about it",
+					"actions": [
+						"IR_Wood_1"
 					]
 				}
 			]
 		}
 	},
 	"action_data": {
-		"incrementWood_2": {
-			"id": "incrementWood_2",
+		"log_action_intro_1": {
+			"id": "log_action_intro_1",
+			"type": "log",
+			"args": {
+				"id": "intro_1"
+			}
+		},
+		"log_action_intro_2": {
+			"id": "log_action_intro_2",
+			"type": "log",
+			"args": {
+				"id": "intro_2"
+			}
+		},
+		"log_action_intro_3": {
+			"id": "log_action_intro_3",
+			"type": "log",
+			"args": {
+				"id": "intro_3"
+			}
+		},
+		"set_flag_intro_1_true": {
+			"id": "set_flag_intro_1_true",
+			"type": "setProgressFlag",
+			"args": {
+				"property": "intro_1",
+				"value": true
+			}
+		},
+		"IR_Wood_1": {
+			"id": "IR_Wood_1",
 			"type": "incrementResource",
 			"args": {
 				"resource": "wood",
-				"amount": 2
+				"amount": "1"
 			}
 		}
 	}
