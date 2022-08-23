@@ -1,19 +1,25 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
+import Game from "../views/Game.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      name: "home",
-      component: Home,
+      name: "Game",
+      component: Game,
     },
     {
-      path: "/game",
-      name: "game",
-      component: () => import("@/views/Game.vue"),
-    },
+      path: "/developer",
+      name: "developer",
+      children: [
+        {
+          path: "dialogue",
+          name: "developer.dialogue",
+          component: () => import("@/views/Developer/Developer.vue"),
+        }
+      ]
+    }
   ],
 });
 

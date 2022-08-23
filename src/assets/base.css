@@ -1,3 +1,72 @@
+:root {
+  --night-text-primary: #fff;
+  --night-text-secondary: #ccc;
+  --night-bg-primary: rgb(0, 0, 0);
+
+  --day-text-primary: #000;
+  --day-text-secondary: #ccc;
+  --day-bg-primary: #fff;
+
+  --dusk-text-primary: #fff;
+  --dusk-text-secondary: rgb(255, 255, 255);
+  --dusk-bg-primary: rgb(80, 80, 80);
+
+  --color-secondary: #ffc107;
+  --color-tertiary: #2c3e50;
+  --color-quaternary: #3498db;
+  --color-quinary: #e74c3c;
+  --color-senary: #f1c40f;
+  --color-septenary: #2ecc71;
+  --color-octonary: #9b59b6;
+  --color-nonary: #34495e;
+  --color-decenary: #16a085;
+  --color-undecenary: #27ae60;
+  --color-duodecenary: #2980b9;
+  --color-tredecenary: #8e44ad;
+  --color-quattuordecenary: #2c3e50;
+  --color-quindecenary: #f39c12;
+  --color-sexdecenary: #e67e22;
+  --color-septendecenary: #d35400;
+  --color-octodecenary: #c0392b;
+  --color-nonadecenary: #7f8c8d;
+  --color-vigintenary: #bdc3c7;
+  --color-unvigintenary: #f39c12;
+  --color-duovigintenary: #e67e22;
+  --color-trevigintenary: #d35400;
+  --color-quattuorvigintenary: #c0392b;
+  --color-quinvigintenary: #7
+}
+
+div.day {
+  color: var(--day-text-primary);
+  background-color: var(--day-bg-primary);
+}
+
+div.day hr {
+  border: 1px solid var(--day-text-secondary);
+}
+
+div.night {
+  color: var(--night-text-primary);
+  background-color: var(--night-bg-primary);
+}
+
+div.night hr {
+  border: 1px solid var(--night-text-secondary);
+}
+
+div.dusk {
+  color: var(--dusk-text-primary);
+  background-color: var(--dusk-bg-primary);
+}
+
+div.dusk hr {
+  border: 1px solid var(--dusk-text-secondary);
+}
+
+div.dusk a {
+  color: var(--color-secondary);
+}
 
 
 body {

@@ -1,0 +1,10 @@
+{
+    "incrementWood_2" :{
+        "id" : "incrementWood_2",
+        "type" : "incrementResource",
+        "args" : {
+            "resource" : "wood",
+            "amount" : 2
+        }
+    }
+}

@@ -7,11 +7,14 @@
     "preview": "vite preview --port 4173",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "backup": "python3 backup.py"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.0.9",
     "@headlessui/vue": "^1.6.7",
     "@heroicons/vue": "^1.0.6",
+    "@vueuse/core": "^9.1.0",
     "element-plus": "^2.2.14",
     "moment": "^2.29.4",
     "pinia": "^2.0.17",

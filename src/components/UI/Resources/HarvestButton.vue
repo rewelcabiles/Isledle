@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-button @click="startHarvest">
+        <el-button type="info" @click="startHarvest">
             {{ label }}
         </el-button>
         <el-progress v-if="state.is_harvesting" class="w-100 mt-2" :percentage="state.percentage" :show-text="false" />
@@ -9,9 +9,13 @@
 </template>
 <script setup lang='ts'>
 import { useResourceStore } from '@/stores/resourceStore';
+import { useGameStore } from '@/stores/gameStore';
 import { reactive, ref } from 'vue';
 
 const resourceStore = useResourceStore();
+const gameStore = useGameStore();
+
+const step = 4;
 
 const props = defineProps({
     label: {
@@ -27,7 +31,6 @@ const props = defineProps({
 
 const state = reactive({
     is_harvesting: false,
-    step: 4,
     percentage: 0,
 });
 
@@ -44,12 +47,13 @@ function startHarvest() {
     if (state.is_harvesting) {
         return;
     }
+    gameStore.incrementTime();
     state.is_harvesting = true;
     setTimeout(harvestStep, 120);
 }
 
 function harvestStep() {
-    state.percentage = state.percentage + state.step;
+    state.percentage = state.percentage + resourceStore.resource[props.resource_name].manual_harvest_speed * step;
     if (state.percentage > 120) {
         endharvest();
     } else {

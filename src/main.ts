@@ -3,15 +3,23 @@ import { createPinia } from "pinia";
 import "./assets/main.css";
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 import App from "./App.vue";
 import router from "./router";
 
-
+import { useGameStore } from "./stores/gameStore";
+import { useResourceStore } from "./stores/resourceStore";
+import { useProgressionStore } from "./stores/progressionStore";
 
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
-app.use(ElementPlus, { zIndex: 3000 })
+
+app.use(ElementPlus, { size:"medium", zIndex: 3000 })
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
+}
+
 app.mount("#app");
