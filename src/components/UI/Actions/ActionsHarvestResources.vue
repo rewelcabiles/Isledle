@@ -1,6 +1,6 @@
 <template>
     <div class="overflow-show flex flex-wrap space-x-4 p-1">
-        <div v-for="(resource, label, index) in resourceStore.resource" :key="index">
+        <div v-for="(resource, label, index) in resourceStore.resource_data" :key="index">
             <HarvestButton v-if="resource.unlocked" :resource_name="resource.name" :label="`Harvest ${resource.name}`" />
         </div>
     </div>

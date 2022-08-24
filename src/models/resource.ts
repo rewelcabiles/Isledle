@@ -1,5 +1,6 @@
 import { reactive } from 'vue';
 
+
 export class Resource {
     name: string;
     stock: number;

@@ -1,34 +1,53 @@
 import { defineStore } from "pinia";
 import { Resource } from "@/models/resource";
-import resource_data from '@/config/resource_data.json';
+import { useStorage } from '@vueuse/core'
+import IsledleData from "@/config/IsledleData.json";
+import type { argModifyResourceInterface, argSetLockResourceInterface } from "@/models/actionInterfaces";
 
-interface resourceInterface {
-    [key: string]: Resource;
+
+export interface resourceInterface {
+  name: string,
+  stock: number,
+  unlocked: boolean
 }
 
 export const useResourceStore = defineStore({
   id: "resource",
   state: () => ({
-      resource : resource_data.reduce((acc, resource: string) => {
-          acc[resource as keyof resourceInterface] = new Resource(resource);
-          return acc;
-      }, {} as resourceInterface ) as resourceInterface,
+      resource_data : useStorage('resource_data', IsledleData.resource_data as { [key: string]: resourceInterface })
   }),
+
   getters: {
     unlockedResources: (state) => {
-      return Object.values(state.resource).filter(resource => resource.unlocked).length > 0;
+      return Object.values(state.resource_data).filter(resource => resource.unlocked).length > 0;
     }
   },
   actions: {
-
-    incrementResource(resource:string, amount:number = 1) {
-        console.log(this.resource)
-        console.log(resource)
-        this.resource[resource].incrementStock(amount);
+    getResource(resource_name: resourceInterface['name']) {
+      return this.resource_data[resource_name];
     },
-
-    unlockResource(resource:string) {
-        this.resource[resource].unlocked = true;
+    setResourceLock(args: argSetLockResourceInterface) {
+      this.resource_data[args.name].unlocked = args.unlocked;
+    },
+    resetData() {
+      this.resource_data = IsledleData.resource_data as { [key: string]: resourceInterface }
+    },
+    modifyResource(args: argModifyResourceInterface){
+      let resource = this.getResource(args.name);
+      switch(args.modify){
+        case 'add':
+          resource.stock += args.value
+          break;
+        case 'subtract':
+          resource.stock -= args.value
+          break;
+      }
+    },
+    deleteResource(resource_name: resourceInterface['name']){
+      delete this.resource_data[resource_name];
+    },
+    createResource(resource: resourceInterface){
+      this.resource_data[resource.name] = resource;
     }
   },
 });

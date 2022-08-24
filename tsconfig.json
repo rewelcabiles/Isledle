@@ -3,6 +3,7 @@
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "compilerOptions": {
     "types": ["element-plus/global"],
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
@@ -13,5 +14,9 @@
     {
       "path": "./tsconfig.config.json"
     }
+  ],
+
+  "typeRoots": [
+    
   ]
 }

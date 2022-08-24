@@ -1,29 +1,24 @@
 <template>
-    <div v-for="(resource, index) in developerStore.resource_data" :key="index" class="flex flex-row align-middle">
-        
-    </div>
-    <div class="h-full overflow-show">
-        
-        <div v-for="(resource, index) in developerStore.resource_data" :key="index">
+    <div class="flex flex-col grow ">
+        <div v-for="(resource, index) in resourceStore.resource_data" :key="index">
             <transition name="el-fade-in-linear">
-                <el-card class="w-full mb-2">
+                <div class="w-full mb-2 shadow-md p-3">
                     <div class="flex flex-row align-middle text-sm">
-                        <p class="pt-1 pl-2">{{ resource }}</p>
-                        <el-button class="ml-auto" type="primary" link icon="minus" @click="removeResource(index)">Delete</el-button>
+                        <div>
+                            <p class="font-bold">{{ resource.name }}</p>
+                            <p class="">unlocked: <span :class="{'text-green-600': resource.unlocked, 'text-red-600': !resource.unlocked}">{{ resource.unlocked }}</span></p>
+                        </div>
+                        <el-button class="ml-auto text-xs" type="danger" link icon="minus" @click="resourceStore.deleteResource(resource.name)">Delete</el-button>
                     </div>
-                </el-card>
+                </div>
             </transition>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { useDeveloperStore } from '@/stores/developerStore';
+import { ResourceStore } from '@/stores/store';
 
-let developerStore = useDeveloperStore();
-
-function removeResource(index: number) {
-    developerStore.removeResource(index);
-}
+let resourceStore = ResourceStore();
 
 </script>

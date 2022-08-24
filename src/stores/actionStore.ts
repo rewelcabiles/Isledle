@@ -1,33 +1,89 @@
 import { defineStore } from "pinia";
-import { doAction } from "@/models/doAction";
-import { useDeveloperStore } from '@/stores/developerStore';
+import { reactive } from 'vue';
+import {
+  LogStore,
+  FlagStore,
+  ResourceStore,
+} from "./store";
 
-
-import type { Action } from "@/models/doAction";
-
-import { useStorage } from '@vueuse/core'
-import IsledleData from "@/config/IsledleData.json";
-
-let Data = IsledleData as { [key: string]: any}
+import type {
+  ActionInterface,
+  argShowLogInterface,
+  argSetFlagInterface,
+  argSetLockResourceInterface,
+  argModifyResourceInterface,
+  argAll
+} from '../models/actionInterfaces'
 
 export const useActionStore = defineStore({
-  id: "log",
-  state: () => ({
-    master_action: useStorage('action_data', Data['action_data' as any]) as { [key: string]: Action }
-  }),
+  id: "actions",
 
-  getters: {
-    
-  },
+  state: () => ({
+    logStore: LogStore(),
+    flagStore: FlagStore(),
+    resourceStore: ResourceStore()
+  }),
+  getters: {},
   
   actions: {
-    getAction(id: string) {
-      return this.master_action[id];
+    do(action: ActionInterface[]) {
+      if (!Array.isArray(action)){
+        action = [action];
+      }
+
+      action.forEach( act =>{
+        switch(act.type){
+          case 'showLog':
+            this.logStore.addLog(act.args as argShowLogInterface);
+            break;
+
+          case 'setFlag':
+            this.flagStore.setFlag(act.args as argSetFlagInterface)
+            break;
+
+          case 'setLockResource':
+            this.resourceStore.setResourceLock(act.args as argSetLockResourceInterface)
+            break;
+            
+          case 'modifyResource':
+            this.resourceStore.modifyResource(act.args as argModifyResourceInterface)
+            break;
+        }
+      });
     },
 
-    doActions(actions: Action['id'][]) {
-      let doActions = actions.map(id => this.getAction(id));
-      new doAction(doActions).do();
+    getActionTypes(){
+      return JSON.parse(JSON.stringify({
+        "Display Log" : {
+          'type': 'showLog',
+          'args': {
+            "id" : ''
+          } as argShowLogInterface
+        } as ActionInterface,
+
+        "Set Flag": {
+          'type': 'setFlag',
+          'args': {
+            "id": "",
+            "value": false
+          } as argSetFlagInterface
+        } as ActionInterface,
+        "Modify Resource Stock" : {
+          'type': 'modifyResource',
+          'args': {
+            "name": "",
+            "modify": "add",
+            "value": 1
+          } as argModifyResourceInterface
+        } as ActionInterface,
+        "Set Resource Lock State": {
+          'type': 'setLockResource',
+          'args': {
+            "name": "",
+            "unlocked": true
+          } as argSetLockResourceInterface
+        } as ActionInterface
+      }));
     }
-  },
+  }
 });

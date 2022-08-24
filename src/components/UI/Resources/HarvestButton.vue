@@ -37,7 +37,11 @@ const state = reactive({
 const emit = defineEmits(['harvested'])
 
 function endharvest() {
-    resourceStore.incrementResource(props.resource_name);
+    resourceStore.modifyResource({
+        name: props.resource_name,
+        modify: 'add',
+        value: 1
+    });
     state.is_harvesting = false;
     state.percentage = 0;
     emit('harvested');
@@ -53,7 +57,7 @@ function startHarvest() {
 }
 
 function harvestStep() {
-    state.percentage = state.percentage + resourceStore.resource[props.resource_name].manual_harvest_speed * step;
+    state.percentage = state.percentage + 4;
     if (state.percentage > 120) {
         endharvest();
     } else {

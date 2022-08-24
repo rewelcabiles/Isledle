@@ -11,7 +11,6 @@
 import { ref } from 'vue';
 
 import UI from './UI.vue'
-import { doAction } from '@/models/doAction';
 import { useGameStore } from '@/stores/gameStore';
 import { useResourceStore } from '@/stores/resourceStore';
 
@@ -19,11 +18,5 @@ let gameStore = useGameStore();
 let resourceStore = useResourceStore();
 
 let ui_ref = ref<InstanceType<typeof UI>>();
-
-
-
-function test(){
-    
-}
 
 </script>

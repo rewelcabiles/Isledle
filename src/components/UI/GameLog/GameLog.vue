@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col pointer-events-auto">
         <Transition name="el-fade-in-linear">
-            <div v-show="progressStore.flags.intro_1" class="flex flex-col">
+            <div v-show="flagStore.flag_data.intro_1" class="flex flex-col">
                 <p class="mx-auto py-2"> Your {{ gameStore.base_type }}</p>
                 <hr class="border-zinc-500">
                 <div class="flex flex-row p-2">
@@ -17,14 +17,14 @@
             <div>
                 <TransitionGroup name="el-fade-in-linear">
                     <div v-for="(log, index) in logStore.logs" :key="index" class="py-1 px-3 rounded-md mb-2">
-                        <p> {{ log.message }}</p>
+                        <p> {{ log.text }}</p>
                         <div v-if="log.options.length > 0 && !log.disabled" class="flex flex-row space-x-3 px-2">
                             <a
                             v-for="(option, index) in log.options"
                             :key="index"
                             href="#"
                             class="text-zinc-500 hover:text-zinc-600 text-sm underline"
-                            @click="actionStore.doActions(option.actions); log.disabled = true; gameStore.incrementTime()">
+                            @click="actionStore.do(option.actions); log.disabled = true; gameStore.incrementTime()">
                                 {{ option.label }}
                             </a>
                         </div>
@@ -35,18 +35,18 @@
     </div>
 </template>
 <script setup lang='ts'>
-import { useGameStore } from '@/stores/gameStore';
+import type { ActionInterface } from '@/models/actionInterfaces';
+import {
+    FlagStore,
+    GameStore,
+    LogStore,
+    ActionStore
+} from '@/stores/store'
 
-import { useProgressionStore } from '@/stores/progressionStore';
-import { useActionStore } from '@/stores/actionStore';
-import { useLogStore } from '@/stores/logStore';
+const flagStore = FlagStore();
+const gameStore = GameStore();
+const logStore = LogStore();
+const actionStore = ActionStore();
 
-let actionStore = useActionStore();
-let progressStore = useProgressionStore();
-let gameStore = useGameStore();
-let logStore = useLogStore();
-
-
-logStore.addLog('intro_1')
 
 </script>
