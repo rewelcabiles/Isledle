@@ -5,7 +5,8 @@ import IsledleData  from '@/config/IsledleData.json'
 import {
     LogStore, 
     ResourceStore, 
-    FlagStore, 
+    FlagStore,
+    GameStore, 
 } from './store'
 
 
@@ -15,6 +16,7 @@ export const useDeveloperStore = defineStore({
     logStore: LogStore(),
     resourceStore: ResourceStore(),
     flagStore: FlagStore(),
+    gameStore: GameStore(),
     IsledleData: IsledleData
 
   }),
@@ -43,6 +45,7 @@ export const useDeveloperStore = defineStore({
         this.logStore.resetData();
         this.resourceStore.resetData();
         this.flagStore.resetData();
+        this.gameStore.resetData();
     }
   },
 });

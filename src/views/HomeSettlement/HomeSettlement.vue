@@ -1,6 +1,6 @@
 <template>
-    <div
-    :class="{'transition-all duration-500': true, 'night': gameStore.getDaySectionByTime == 'night', 'day': gameStore.getDaySectionByTime == 'day', 'dusk': gameStore.getDaySectionByTime == 'dusk'}">
+    <!--<div :class="{'transition-all duration-500': true, 'night': gameStore.getDaySectionByTime == 'night', 'day': gameStore.getDaySectionByTime == 'day', 'dusk': gameStore.getDaySectionByTime == 'dusk'}">-->
+    <div>
         <div id="home_settlement" class="w-screen h-screen transition[background-color] duration-1000">
             <UI ref="ui_ref" class="transition-all duration-200"/>
         </div>

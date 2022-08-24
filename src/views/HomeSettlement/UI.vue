@@ -1,20 +1,21 @@
-<template lang="" >
+<template lang="">
     <div v-if="is_visible" class="transition-all duration-700 flex flex-row h-screen w-screen fixed pointer-events-none">
         <div class="w-1/3 relative">
 
         </div>
-        <div class="w-1/2 relative flex flex-col pt-2 px-6">
+        <div class="w-1/2 relative flex flex-col border-l-2">
             <GameLog class="h-1/2" />
             <Actions class="h-1/2" />
         </div>
         <div class="w-1/3 relative ">
-            <ResourceSummary class="absolute top-0 right-0 w-40" />
+            <UIResourcePanel />
         </div>
     </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
 
+import UIResourcePanel from '@/components/UI/Resources/UIResourcePanel.vue';
 import ResourceSummary from "@/components/UI/Resources/ResourceSummary.vue"
 import Actions from "@/components/UI/Actions/Actions.vue"
 import GameLog from "@/components/UI/GameLog/GameLog.vue"
@@ -41,6 +42,7 @@ defineExpose({
 });
 
 </script>
-<style lang="">
-    
+<style>
+
+
 </style>

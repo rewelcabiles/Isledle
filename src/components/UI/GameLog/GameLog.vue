@@ -2,9 +2,9 @@
     <div class="flex flex-col pointer-events-auto">
         <Transition name="el-fade-in-linear">
             <div v-show="flagStore.flag_data.intro_1" class="flex flex-col">
-                <p class="mx-auto py-2"> Your {{ gameStore.base_type }}</p>
+                <p class="mx-auto py-2 uppercase"> {{ game_config.game_name }} </p>
                 <hr class="border-zinc-500">
-                <div class="flex flex-row p-2">
+                <div class="flex flex-row p-2 bg_1">
                     Day: {{ gameStore.raw_day }}
                     <div class="ml-auto">
                         Time: {{ gameStore.time }}
@@ -35,7 +35,8 @@
     </div>
 </template>
 <script setup lang='ts'>
-import type { ActionInterface } from '@/models/actionInterfaces';
+import game_config from '@/config/game_config.json'
+
 import {
     FlagStore,
     GameStore,
@@ -48,5 +49,9 @@ const gameStore = GameStore();
 const logStore = LogStore();
 const actionStore = ActionStore();
 
+if (!flagStore.flag_data['intro_started']){
+    logStore.addLog({'id': 'lg_intro_1'})
+    flagStore.flag_data['intro_started'] = true;
+}
 
 </script>

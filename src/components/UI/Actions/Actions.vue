@@ -1,10 +1,10 @@
 <template>
     <transition name="el-fade-in-linear">
         <div class="pointer-events-auto" v-if="hasVisibleTabs.value">
-            <el-tabs tab-position="left" class="w-full">
+            <el-tabs tab-position="left" class="w-full" >
                 <template v-for="(tab, label, index) in tabs" :key="index">
                     <transition name="el-fade-in-linear">
-                        <el-tab-pane class="transition-all duration-200" v-if="tab.visible" :label="label">
+                        <el-tab-pane class="transition-all duration-200" v-if="tab.visible" :label="label" style="--el-tab-pane-text-color: red">
                             <component :is="tab.component" />
                         </el-tab-pane>
                     </transition>

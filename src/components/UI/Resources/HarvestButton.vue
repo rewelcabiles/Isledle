@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-button type="info" @click="startHarvest">
+        <el-button type="primary"  @click="startHarvest" plain>
             {{ label }}
         </el-button>
         <el-progress v-if="state.is_harvesting" class="w-100 mt-2" :percentage="state.percentage" :show-text="false" />

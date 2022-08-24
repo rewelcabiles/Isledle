@@ -17,7 +17,8 @@
 		}
 	},
 	"flag_data": {
-		"intro_1": false
+		"intro_1": false,
+		"intro_started": false
 	},
 	"log_data": {
 		"lg_intro_1": {

@@ -1,9 +1,0 @@
-{
-    "intro_1": {
-        "id": "intro_1",
-        "text": "You wake in the night",
-        "options": [
-            {"label": "Step outside", "actions": ["incrementWood_2"]}
-        ]
-    }
-}

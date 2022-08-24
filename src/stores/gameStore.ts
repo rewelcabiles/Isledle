@@ -1,16 +1,13 @@
 import { defineStore } from "pinia";
-import type { Log } from "@/models/logEntry";
-import log_data from "@/config/log_data.json";
+import { useStorage } from "@vueuse/core";
 
 export const useGameStore = defineStore({
   id: "game",
   state: () => ({
-    raw_day: 0,
-    time: 3,
+    raw_day: useStorage('raw_day', 0),
+    time: useStorage('time', 3),
     max_steps_per_day: 46,
     base_type: "Tent",
-    
-    logs: [] as Log[],
 
     daySections: {
       "day": [9, 10, 11, 12, 13, 14, 15, 16, 17],
@@ -28,8 +25,6 @@ export const useGameStore = defineStore({
       const { time } = state;
       const daySection = Object.keys(daySections).find(daySection => daySections[daySection].includes(time));
       return daySection;
-
-      
     }
   },
   
