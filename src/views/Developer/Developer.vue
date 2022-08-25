@@ -3,7 +3,7 @@
         <!--------- ENTRIES ----------->
         <!------------------------------->
         <div class="w-full h-full flex flex-col grow pt-4">
-            <p class="font-bold text-xl">
+            <p class="font-bold text-xl border-b-2">
                 Entries
             </p>
 
@@ -22,16 +22,12 @@
 
         <!--------- ACTIONS ----------->
         <!------------------------------->
-        <div class="w-full h-full flex flex-col pt-4 mx-5 border-x-2">
-            <div class="flex flex-row top-0 px-5">
-                <p class="font-bold text-xl mr-auto">
+        <div class="w-full h-full flex flex-col pt-4 border-x-2">
+            <div class="flex flex-row ">
+                <p class="font-bold text-lg mr-auto">
                     JSON
                 </p>
-                <el-switch
-                class="mr-2"
-                v-model="editableJson"
-                active-text="Editable"
-                />
+                <el-switch class="mr-2" v-model="editableJson" active-text="Editable" />
             </div>
             <div class="w-full p-0 flex flex-col grow overflow-auto">
                 <p class="font-bold mx-auto">Resources</p>
@@ -46,8 +42,8 @@
         <!--------- EDITOR PANE ---------->
         <!------------------------------->
         <div class="w-full pt-4">
-            <div class="flex flex-row">
-                <p class="font-bold text-xl">
+            <div class="flex flex-row border-b-2">
+                <p class="font-bold text-xl pl-4">
                     Editor
                 </p>
                 <div class="ml-auto">
@@ -56,20 +52,23 @@
                 </div>
             </div>
 
-            <el-tabs v-model="currentNew" class="flex flex-col h-full px-4">
-                <el-tab-pane label="New Log" name="new_log" class="h-full">
+            <el-tabs v-model="currentNew" class="h-full px-4" tab-position="right">
+                <el-tab-pane label="Log" name="newLog" class="h-full pt-4">
                     <EditorLog />
                 </el-tab-pane>
 
-                <el-tab-pane label="New Resource" name="new_resource">
+                <el-tab-pane label="Resource" name="newResource" class="pt-4">
                     <EditResource/>
                 </el-tab-pane>
 
-                <el-tab-pane label="New Flag" name="new_flag">
+                <el-tab-pane label="Flag" name="newFlag" class="pt-4">
                     <EditorFlag/>
                 </el-tab-pane>
-            </el-tabs>
 
+                <el-tab-pane label="Drop Table" name="newDropTable" class="pt-4">
+                    <EditorDropTable />
+                </el-tab-pane>
+            </el-tabs>
         </div>
     </div>
 </template>
@@ -80,13 +79,14 @@ import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
 
 
-import EditResource from './EditorResource.vue';
-import EditorFlag from './EditorFlag.vue';
-import EditorLog from './EditorLog.vue';
+import EditResource from './Editor/EditorResource.vue';
+import EditorFlag from './Editor/EditorFlag.vue';
+import EditorLog from './Editor/EditorLog.vue';
+import EditorDropTable from './Editor/EditorDropTable.vue'
 
-import EntriesFlags from './EntriesFlags.vue';
-import EntriesResources from './EntriesResources.vue';
-import EntriesLog from './EntriesLog.vue';
+import EntriesFlags from './Entries/EntriesFlags.vue';
+import EntriesResources from './Entries/EntriesResources.vue';
+import EntriesLog from './Entries/EntriesLog.vue';
 
 import { ref, getCurrentInstance } from 'vue';
 
@@ -103,7 +103,7 @@ const resourceStore = ResourceStore();
 const logStore = LogStore();
 const flagStore = FlagStore();
 
-let currentNew = 'new_log';
+let currentNew = 'newLog';
 let currentLeftPaneTab = 'log';
 let currentMiddlePaneTab = 'actions';
 let editableJson = ref(false);

@@ -15,15 +15,12 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useDeveloperStore, type FlagEntry } from '@/stores/developerStore';
+import { useDeveloperStore } from '@/stores/developerStore';
 import { FlagStore } from '@/stores/store'
 
 const flagStore = FlagStore();
 
 let developerStore = useDeveloperStore();
 
-function removeFlag(key: any) {
-    developerStore.removeFlag(key);
-}
 
 </script>
