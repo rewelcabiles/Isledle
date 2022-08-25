@@ -14,9 +14,6 @@ export const useGameStore = defineStore({
       "dusk": [5, 6, 7, 18, 19, 20],
       "night": [21, 22, 23, 0, 1, 2, 3, 4]
     } as { [key: string]: number[] },
-
-
-
   }),
 
   getters: {
@@ -37,5 +34,10 @@ export const useGameStore = defineStore({
         this.raw_day++;
       }
     },
+
+    resetData() {
+      this.time = 3;
+      this.raw_day = 0;
+    }
   },
 });
