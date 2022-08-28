@@ -47,7 +47,7 @@ export const useLogStore = defineStore( 'logs', () => {
   }
 
   function addLog(arg: argShowLogInterface) {
-    if (Object.keys(log_data).includes(arg.id)){
+    if (Object.keys(log_data.value).includes(arg.id)){
       logs.value.push( getLog(arg.id) );
     } else {
       console.error(`LOG-STORE: Does not exist in log_data: ${arg.id}`);
@@ -67,5 +67,5 @@ export const useLogStore = defineStore( 'logs', () => {
     delete log_data.value[id];
   }
 
-  return { addLog, resetData, createLog, removeLogFromData, messageBus, log_data, logs}
+  return { resetData, createLog, removeLogFromData, log_data, logs}
 });

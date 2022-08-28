@@ -44,13 +44,12 @@ export const useResourceStore = defineStore('resource', () => {
   }
   
   function modifyResource(args: argModifyResourceInterface){
-    let resource = getResource(args.name);
     switch(args.modify){
       case 'add':
-        resource.stock += args.value
+        resource_data.value[args.name].stock += args.value
         break;
       case 'subtract':
-        resource.stock -= args.value
+        resource_data.value[args.name].stock -= args.value
         break;
     }
   }
