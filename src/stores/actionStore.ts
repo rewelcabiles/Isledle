@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import {
   LogStore,
   FlagStore,
@@ -12,78 +12,65 @@ import type {
   argSetFlagInterface,
   argSetLockResourceInterface,
   argModifyResourceInterface,
-  argAll
+  argAll,
+  argRollDropTableInterface
 } from '../models/actionInterfaces'
+import { MessageBus } from "@/models/MessageBus";
 
-export const useActionStore = defineStore({
-  id: "actions",
+export const useActionStore = defineStore('action', () => {
 
-  state: () => ({
-    logStore: LogStore(),
-    flagStore: FlagStore(),
-    resourceStore: ResourceStore()
-  }),
-  getters: {},
-  
-  actions: {
-    do(action: ActionInterface[]) {
-      if (!Array.isArray(action)){
-        action = [action];
-      }
 
-      action.forEach( act =>{
-        switch(act.type){
-          case 'showLog':
-            this.logStore.addLog(act.args as argShowLogInterface);
-            break;
+  const logStore = LogStore()
+  const flagStore = FlagStore()
+  const resourceStore = ResourceStore()
 
-          case 'setFlag':
-            this.flagStore.setFlag(act.args as argSetFlagInterface)
-            break;
+  const messageBus = ref(new MessageBus())
 
-          case 'setLockResource':
-            this.resourceStore.setResourceLock(act.args as argSetLockResourceInterface)
-            break;
-            
-          case 'modifyResource':
-            this.resourceStore.modifyResource(act.args as argModifyResourceInterface)
-            break;
-        }
-      });
-    },
-
-    getActionTypes(){
-      return JSON.parse(JSON.stringify({
-        "Display Log" : {
-          'type': 'showLog',
-          'args': {
-            "id" : ''
-          } as argShowLogInterface
-        } as ActionInterface,
-
-        "Set Flag": {
-          'type': 'setFlag',
-          'args': {
-            "id": "",
-            "value": false
-          } as argSetFlagInterface
-        } as ActionInterface,
-        "Modify Resource Stock" : {
-          'type': 'modifyResource',
-          'args': {
-            "name": "",
-            "modify": "add",
-            "value": 1
-          } as argModifyResourceInterface
-        } as ActionInterface,
-        "Set Resource Lock State": {
-          'type': 'setLockResource',
-          'args': {
-            "name": "",
-            "unlocked": true
-          } as argSetLockResourceInterface
-        } as ActionInterface
-      }));
-    }
+  function sendActionsToBus(actions: ActionInterface[]){
+    actions.forEach( action => {
+      messageBus.value.notify(action)
+    });
   }
+
+  function getActionTypes(){
+    return JSON.parse(JSON.stringify({
+      "Display Log" : {
+        'type': 'showLog',
+        'args': {
+          "id" : ''
+        } as argShowLogInterface
+      } as ActionInterface,
+
+      "Set Flag": {
+        'type': 'setFlag',
+        'args': {
+          "id": "",
+          "value": false
+        } as argSetFlagInterface
+      } as ActionInterface,
+      "Modify Resource Stock" : {
+        'type': 'modifyResource',
+        'args': {
+          "name": "",
+          "modify": "add",
+          "value": 1
+        } as argModifyResourceInterface
+      } as ActionInterface,
+      "Set Resource Lock State": {
+        'type': 'setLockResource',
+        'args': {
+          "name": "",
+          "unlocked": true
+        } as argSetLockResourceInterface
+      } as ActionInterface,
+      "Roll Drop Table": {
+        'type': 'rollDropTable',
+        'args': {
+          "id": "",
+        } as argRollDropTableInterface
+      } as ActionInterface
+    }));
+  }
+
+  return { messageBus, getActionTypes, sendActionsToBus}
 });

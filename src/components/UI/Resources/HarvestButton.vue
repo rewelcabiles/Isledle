@@ -11,9 +11,12 @@
 import { useResourceStore } from '@/stores/resourceStore';
 import { useGameStore } from '@/stores/gameStore';
 import { reactive, ref } from 'vue';
+import { ActionStore } from '@/stores/store';
+import type { argModifyResourceInterface } from '@/models/actionInterfaces';
 
 const resourceStore = useResourceStore();
 const gameStore = useGameStore();
+const actionStore = ActionStore();
 
 const step = 4;
 
@@ -37,11 +40,14 @@ const state = reactive({
 const emit = defineEmits(['harvested'])
 
 function endharvest() {
-    resourceStore.modifyResource({
-        name: props.resource_name,
-        modify: 'add',
-        value: 1
-    });
+    actionStore.sendActionsToBus([{
+        "type": "modifyResource",
+        "args": {
+            "name": props.resource_name,
+            "modify": "add",
+            "value": 1
+        } as argModifyResourceInterface
+    }]);
     state.is_harvesting = false;
     state.percentage = 0;
     emit('harvested');

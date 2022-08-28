@@ -7,6 +7,9 @@ import type {
   argAll,
   ActionInterface
 } from '@/models/actionInterfaces';
+import { computed, ref } from "vue";
+import { MessageBus } from "@/models/MessageBus";
+import { ActionStore } from "./store";
 
 
 export interface choiceInterface{
@@ -25,41 +28,44 @@ interface logDataInterface{
   [key: string] : any
 }
 
-export const useLogStore = defineStore({
-  id: "logs",
-  state: () => ({
-    logs: useStorage('logs', [] as logInterface[]),
-    log_data: useStorage('log_data', IsledleData.log_data as logDataInterface)
-  }),
+export const useLogStore = defineStore( 'logs', () => {
 
-  getters: {
-    
-  },
+  const logs = ref(useStorage('logs', [] as logInterface[]))
+  const log_data = ref(useStorage('log_data', IsledleData.log_data as logDataInterface))
   
-  actions: {
-    getLog(id:string) {
-        return this.log_data[id];
-    },
+  
+  const messageBus = ref(new MessageBus({
+    'showLog' : addLog
+  }));
+  const actionStore = ActionStore();
+  actionStore.messageBus.attach(messageBus.value)
 
-    addLog(arg: argShowLogInterface) {
-      if (Object.keys(this.log_data).includes(arg.id)){
-        this.logs.push( this.getLog(arg.id) );
-      } else {
-        console.error(`LOG-STORE: Does not exist in log_data: ${arg.id}`);
-      }
-    },
 
-    resetData() {
-      this.log_data = IsledleData.log_data as logDataInterface;
-      this.logs = []
-    },
 
-    createLog(new_log: logInterface){
-      this.log_data[new_log.id] = new_log
-    },
+  function getLog(id:string) {
+      return log_data.value[id];
+  }
 
-    removeLogFromData(id: keyof logDataInterface){
-      delete this.log_data[id];
+  function addLog(arg: argShowLogInterface) {
+    if (Object.keys(log_data).includes(arg.id)){
+      logs.value.push( getLog(arg.id) );
+    } else {
+      console.error(`LOG-STORE: Does not exist in log_data: ${arg.id}`);
     }
-  },
+  }
+
+  function resetData() {
+    log_data.value = IsledleData.log_data as logDataInterface;
+    logs.value = []
+  }
+
+  function createLog(new_log: logInterface){
+    log_data.value[new_log.id] = new_log
+  }
+
+  function removeLogFromData(id: keyof logDataInterface){
+    delete log_data.value[id];
+  }
+
+  return { addLog, resetData, createLog, removeLogFromData, messageBus, log_data, logs}
 });
