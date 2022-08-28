@@ -30,7 +30,7 @@ export class MessageBus {
     }
     update(action: ActionInterface): void {
         if (this.allowedActions.includes(action.type)){
-            this.functionMap[action.type]();
+            this.functionMap[action.type](action.args);
         }
     }
 }
