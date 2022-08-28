@@ -1,6 +1,7 @@
+export type argAll  = argShowLogInterface | argSetFlagInterface | argSetLockResourceInterface | argModifyResourceInterface | argRollDropTableInterface;
 export interface ActionInterface {
-    "type": 'showLog' | 'setFlag' | 'setLockResource' | 'modifyResource',
-    "args": ActionInterface | argSetFlagInterface | argSetLockResourceInterface | argModifyResourceInterface;
+    "type": 'showLog' | 'setFlag' | 'setLockResource' | 'modifyResource' | 'rollDropTable',
+    "args": argAll;
 }
 
 export interface argShowLogInterface {
@@ -23,4 +24,7 @@ export interface argModifyResourceInterface {
     "value" : number
 }
 
-export type argAll  = argShowLogInterface | argSetFlagInterface | argSetLockResourceInterface | argModifyResourceInterface;
+export interface argRollDropTableInterface{
+    "id": string
+}
+

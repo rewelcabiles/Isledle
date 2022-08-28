@@ -36,6 +36,8 @@
                 <VueJsonPretty class="mb-10" :data="flagStore.flag_data" :collapsedOnClickBrackets="true" :editable="editableJson"/>
                 <p class="font-bold mx-auto">Logs</p>
                 <VueJsonPretty class="mb-10" :data="logStore.log_data" :collapsedOnClickBrackets="true" :editable="editableJson"/>
+                <p class="font-bold mx-auto">Drop Table</p>
+                <VueJsonPretty class="mb-10" :data="dropTableStore.dropTableData" :collapsedOnClickBrackets="true" :editable="editableJson"/>
             </div>
         </div>
 
@@ -92,6 +94,7 @@ import { ref, getCurrentInstance } from 'vue';
 
 import {
     DeveloperStore,
+    DropTableStore,
     FlagStore,
     LogStore,
     ResourceStore
@@ -102,6 +105,7 @@ const developerStore = DeveloperStore();
 const resourceStore = ResourceStore();
 const logStore = LogStore();
 const flagStore = FlagStore();
+const dropTableStore = DropTableStore();
 
 let currentNew = 'newLog';
 let currentLeftPaneTab = 'log';
