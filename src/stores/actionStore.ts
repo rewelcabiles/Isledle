@@ -18,12 +18,6 @@ import type {
 import { MessageBus } from "@/models/MessageBus";
 
 export const useActionStore = defineStore('action', () => {
-
-
-  const logStore = LogStore()
-  const flagStore = FlagStore()
-  const resourceStore = ResourceStore()
-
   const messageBus = ref(new MessageBus())
 
   function sendActionsToBus(actions: ActionInterface[]){
