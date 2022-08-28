@@ -8,15 +8,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import UI from './UI.vue'
 import { useGameStore } from '@/stores/gameStore';
 import { useResourceStore } from '@/stores/resourceStore';
-
-let gameStore = useGameStore();
-let resourceStore = useResourceStore();
+import { ActionStore, DropTableStore, FlagStore } from '@/stores/store';
+import type { argRollDropTableInterface, argShowLogInterface } from '@/models/actionInterfaces';
 
 let ui_ref = ref<InstanceType<typeof UI>>();
+
+const flagStore = FlagStore();
+const actionStore = ActionStore();
+
+
+onMounted(() => {
+    if (!flagStore.flag_data['intro_started']){
+        actionStore.sendActionsToBus([{
+            "type": "showLog",
+            "args": {
+                "id": "lg_intro_1"
+            } as argShowLogInterface
+        }])
+        flagStore.flag_data['intro_started'] = true;
+    }
+    actionStore.sendActionsToBus([{
+        "type" : "rollDropTable",
+        "args": {
+            "id" : "test"
+        }
+    }])
+})
+console.log("WTF")
+
 
 </script>

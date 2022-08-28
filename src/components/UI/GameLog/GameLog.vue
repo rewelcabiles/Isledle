@@ -24,7 +24,7 @@
                             :key="index"
                             href="#"
                             class="text-zinc-500 hover:text-zinc-600 text-sm underline"
-                            @click="actionStore.do(option.actions); log.disabled = true; gameStore.incrementTime()">
+                            @click="actionStore.sendActionsToBus(option.actions); log.disabled = true; gameStore.incrementTime()">
                                 {{ option.label }}
                             </a>
                         </div>
@@ -48,10 +48,5 @@ const flagStore = FlagStore();
 const gameStore = GameStore();
 const logStore = LogStore();
 const actionStore = ActionStore();
-
-if (!flagStore.flag_data['intro_started']){
-    logStore.addLog({'id': 'lg_intro_1'})
-    flagStore.flag_data['intro_started'] = true;
-}
 
 </script>
