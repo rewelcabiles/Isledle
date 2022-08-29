@@ -8,7 +8,8 @@ export class MessageBus {
     observers:  MessageBus[] = []
     allowedActions: string[] = [] 
     functionMap: actionFunctionMapInterface = {};
-    
+    eventList: any[] = [];
+
     constructor(functionMap?: actionFunctionMapInterface){
         if (functionMap){
             this.functionMap = functionMap;
@@ -24,6 +25,7 @@ export class MessageBus {
         );
     }
     notify(action: ActionInterface): void {
+        this.eventList.push(action)
         this.observers.forEach( observer => {
             observer.update(action);
         });

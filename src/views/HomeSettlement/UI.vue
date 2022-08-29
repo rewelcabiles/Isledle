@@ -1,7 +1,8 @@
 <template lang="">
-    <div v-if="is_visible" class="transition-all duration-700 flex flex-row h-screen w-screen fixed pointer-events-none">
-        <div class="w-1/3 relative">
-
+    <div v-if="is_visible" class="transition-all duration-700 flex flex-row h-screen w-screen fixed">
+        <div class="w-1/3 relative h-100 overflow-auto">
+            <pre>{{ JSON.stringify(actionStore.messageBus.eventList, null, '\t') }}</pre>
+            
         </div>
         <div class="w-1/2 relative flex flex-col border-l-2">
             <GameLog class="h-1/2" />
