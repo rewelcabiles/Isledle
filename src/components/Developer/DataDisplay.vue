@@ -8,16 +8,18 @@
         <template v-if="(typeof object != typeof {} || typeof object != typeof [])">
             {{ object }}
         </template>
-        <el-descriptions v-else direction="vertical" :column="3" border>
+        <el-descriptions size="small" v-else direction="vertical" :column="3" border>
             <el-descriptions-item v-for="(v, k) in object" :label="(k as any)">
                 <template v-if="(typeof v == typeof [])">
                     <div v-for="(v2, k2) in v" class="mb-5">
-                        <el-descriptions direction="vertical" :column="2" border v-for="(v3, k3) in v2" >
+                        <el-descriptions size="small" direction="vertical" :column="2" border v-for="(v3, k3) in v2" >
                             <el-descriptions-item :label="(k3 as any)">
                                 {{ v3 }}
                             </el-descriptions-item>
                         </el-descriptions>
-                        <el-divider/>
+                        <el-divider>
+                            <el-icon><SemiSelect /></el-icon>
+                        </el-divider>
                     </div>
                 </template>
                 <template v-else>

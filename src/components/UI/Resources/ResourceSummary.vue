@@ -1,9 +1,9 @@
 <template>
-    <div id="ui_resource_summary" class="pointer-events-auto flex flex-col gap-2">
-        <div v-for="(resource, label, index) in resourceStore.unlockedResources" class="px-2 mb-1 ">
+    <div id="ui_resource_summary" class="pointer-events-auto flex flex-col">
+        <div v-for="(resource, label, index) in resourceStore.unlockedResources" class="px-2">
             <transition name="el-fade-in-linear">
                 <template v-if="resource.unlocked">
-                    <el-row>
+                    <el-row class="">
                         <el-col :span="12">
                             {{ resource.name }} 
                         </el-col>

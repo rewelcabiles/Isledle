@@ -161,7 +161,7 @@ function downloadFiles(){
 
 </script>
 <style>
-    .developer.el-tabs__content {
-        height: 100vh !important
+    .developer > .el-tabs__content {
+        height: 100% !important
     }
 </style>

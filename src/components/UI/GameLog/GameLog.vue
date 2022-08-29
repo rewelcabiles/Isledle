@@ -3,14 +3,14 @@
         <Transition name="el-fade-in-linear">
             <div v-show="flagStore.data.intro_1" class="flex flex-col">
                 <p class="mx-auto py-2 uppercase"> {{ game_config.game_name }} </p>
-                <hr class="border-zinc-500">
-                <div class="flex flex-row p-2 bg_1">
+                <hr/>
+                <div class="flex flex-row p-2">
                     Day: {{ gameStore.raw_day }}
                     <div class="ml-auto">
                         Time: {{ gameStore.time }}
                     </div>
                 </div>
-                <hr class="border-zinc-500 mb-2">
+                <hr/>
             </div>
         </Transition>
         <div class="flex flex-col-reverse overflow-auto">

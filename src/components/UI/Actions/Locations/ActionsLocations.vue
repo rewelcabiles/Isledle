@@ -1,5 +1,5 @@
 <template>
-    <div class="overflow-auto flex flex-wrap">
+    <div class="overflow-auto grid grid-cols-4">
         <div v-for="(location, label, index) in locationStore.data" :key="index" class="flex flex-col">
             <template v-if="location.unlocked">
                 <p class="border-b-2 mb-2">{{ label }}</p>
