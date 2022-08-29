@@ -4,7 +4,7 @@
             <el-tabs tab-position="left" class="w-full" >
                 <template v-for="(tab, label, index) in tabs" :key="index">
                     <transition name="el-fade-in-linear">
-                        <el-tab-pane :key="index" class="transition-all duration-200" v-if="tab.visible" :label="label">
+                        <el-tab-pane :key="index" class="transition-all duration-200 px-10" v-if="tab.visible" :label="label">
                             <component :is="tab.component" />
                         </el-tab-pane>
                     </transition>
@@ -14,19 +14,19 @@
     </transition>
 </template>
 <script setup lang='ts'>
-import { ref, reactive, computed } from 'vue';
+import { reactive, computed } from 'vue';
 
-import ActionsHarvestResources from './ActionsHarvestResources.vue';
+import ActionsHarvestResources from './Locations/ActionsLocations.vue';
 import { useResourceStore } from '@/stores/resourceStore';
 
 let resourceStore = useResourceStore();
-let harvest_tab_visible = computed(() => resourceStore.unlockedResources)
+
 
 const tabs = reactive({
-    "Harvest Resources": {
-        label: 'Harvest Resources',
+    "Locations": {
+        label: 'Locations',
         component: ActionsHarvestResources,
-        visible: harvest_tab_visible,
+        visible: computed(() => resourceStore.isUnlocked),
     },
 });
 

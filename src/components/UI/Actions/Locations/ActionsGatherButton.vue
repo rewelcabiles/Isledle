@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-button type="primary"  @click="startHarvest" plain>
+        <el-button type="primary" link  @click="startHarvest">
             {{ label }}
         </el-button>
         <el-progress v-if="state.is_harvesting" class="w-100 mt-2" :percentage="state.percentage" :show-text="false" />
@@ -10,15 +10,16 @@
 <script setup lang='ts'>
 import { useResourceStore } from '@/stores/resourceStore';
 import { useGameStore } from '@/stores/gameStore';
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import { ActionStore } from '@/stores/store';
-import type { argModifyResourceInterface } from '@/models/actionInterfaces';
+import type { argModifyResourceInterface, argRollDropTableInterface } from '@/models/actionInterfaces';
+import type { DropTableInterface } from '@/stores/dropTableStore';
 
 const resourceStore = useResourceStore();
 const gameStore = useGameStore();
 const actionStore = ActionStore();
 
-const step = 4;
+const step = 8;
 
 const props = defineProps({
     label: {
@@ -29,6 +30,11 @@ const props = defineProps({
     resource_name: {
         type: String,
         default: '',
+    },
+
+    drop_table: {
+        type: String,
+        default: ''
     }
 })
 
@@ -41,12 +47,10 @@ const emit = defineEmits(['harvested'])
 
 function endharvest() {
     actionStore.sendActionsToBus([{
-        "type": "modifyResource",
+        "type": "rollDropTable",
         "args": {
-            "name": props.resource_name,
-            "modify": "add",
-            "value": 1
-        } as argModifyResourceInterface
+            "id": props.drop_table
+        } as argRollDropTableInterface
     }]);
     state.is_harvesting = false;
     state.percentage = 0;
@@ -63,7 +67,7 @@ function startHarvest() {
 }
 
 function harvestStep() {
-    state.percentage = state.percentage + 4;
+    state.percentage = state.percentage + step;
     if (state.percentage > 120) {
         endharvest();
     } else {
