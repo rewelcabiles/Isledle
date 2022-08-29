@@ -37,7 +37,7 @@ function addFlag() {
 }
 
 function checkIfFlagExists(){
-    if (Object.keys(flagStore.flag_data).includes(flag_form.id)){
+    if (Object.keys(flagStore.data).includes(flag_form.id)){
         flag_exists.value = true;
     } else {
         flag_exists.value = false;

@@ -43,9 +43,9 @@ function addResource() {
 let resourceExists = ref(false);
 
 function checkIfExists(){
-    if(Object.keys(resourceStore.resource_data).includes(resource_form.name)){
+    if(Object.keys(resourceStore.data).includes(resource_form.name)){
         resourceExists.value = true;
-        let existing_resource = resourceStore.resource_data[resource_form.name];
+        let existing_resource = resourceStore.data[resource_form.name];
         resource_form.name = existing_resource.name;
         resource_form.stock = existing_resource.stock;
         resource_form.unlocked = existing_resource.unlocked;
