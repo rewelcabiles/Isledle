@@ -19,8 +19,9 @@ import UIResourcePanel from '@/components/UI/Resources/UIResourcePanel.vue';
 import ResourceSummary from "@/components/UI/Resources/ResourceSummary.vue"
 import Actions from "@/components/UI/Actions/Actions.vue"
 import GameLog from "@/components/UI/GameLog/GameLog.vue"
-import Intro from "@/components/Story/Intro.vue"
+import { ActionStore } from '@/stores/store';
 
+const actionStore = ActionStore()
 
 
 

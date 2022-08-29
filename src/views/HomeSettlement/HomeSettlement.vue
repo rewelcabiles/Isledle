@@ -32,12 +32,6 @@ onMounted(() => {
         }])
         flagStore.data['intro_started'] = true;
     }
-    actionStore.sendActionsToBus([{
-        "type" : "rollDropTable",
-        "args": {
-            "id" : "test"
-        }
-    }])
 })
 console.log("WTF")
 

@@ -17,16 +17,12 @@
     </div>
 </template>
 
-<script lang='ts'>
+<script setup lang='ts'>
 import { defineComponent } from 'vue';
 import { useResourceStore } from '@/stores/resourceStore';
+import ResourceSummaryChange from './ResourceSummaryChange.vue';
 
-export default defineComponent({ 
-    data() {
-        return {
-            resourceStore: useResourceStore(),
-        };
-    },
-});
+const resourceStore = useResourceStore();
+
 
 </script>

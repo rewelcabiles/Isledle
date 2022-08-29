@@ -20,12 +20,9 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ActionStore, FlagStore, GameStore, LogStore } from '@/stores/store';
+import { FlagStore, GameStore, LogStore } from '@/stores/store';
 import ResourceSummaryVue from './ResourceSummary.vue';
 
-
-const actionStore = ActionStore();
-const logStore = LogStore();
 const gameStore = GameStore();
 const flagStore = FlagStore();
 
