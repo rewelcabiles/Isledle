@@ -1,16 +1,16 @@
 {
 	"locations": {
-		"asdasd": {
-			"name":"bat guano",
-			"unlocked": false,
-			"specialInteractName": "dsadsa",
-			"dropTable": "wooo",
-			"specialDropTable": "test"
+		"forest": {
+			"name":"forest",
+			"unlocked": true,
+			"specialInteractName": "Hunt",
+			"dropTable": "dt_forest_0",
+			"specialDropTable": "dt_forest_0"
 		}
 	},
 	"dropTables": {
-		"forest": {
-			"id": "forest",
+		"dt_forest_0": {
+			"id": "dt_forest_0",
 			"table": [
 				{
 					"name": "wood",
