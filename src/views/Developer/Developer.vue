@@ -146,9 +146,9 @@ function clearLocalStorage() {
 
 function downloadFiles(){
     let a = document.createElement("a");
-    let toOutput = {} as { [key: string]: typeof defineStore}
+    let toOutput = {} as { [key: string]: any}
     Object.values(stores).forEach( store => {
-        toOutput[store.dataName] = store.data
+        toOutput[store.dataName as string] = store.data
     });
     const blob = new Blob([JSON.stringify(toOutput, null, '\t')], {type: "text/plain;charset=utf-8"});
     a.href = URL.createObjectURL(blob);
