@@ -5,8 +5,11 @@
         :formTemplate="idForm"
         :form="newForm"
         :existingList="Object.keys(dropTableStore.data)"
+        
         existingKey="id"
-        @saveClicked="saveDropTable()">
+        @save-clicked="dropTableStore.saveDropTable(JSON.parse(JSON.stringify(newForm)))"
+        @is-updatable="updateForm()"
+        >
 
             <template v-slot:buttons>
                 <div class="flex flex-row mt-5">
@@ -24,7 +27,7 @@
 
             <template v-slot:buttons>
                 <div class="flex flex-row mt-5">
-                    <el-button  @click="removeNewTableEntry(index)" type="danger" class="w-full" icon="Minus"> Remove Resource </el-button>
+                    <el-button  @click="newForm.table.splice(index, 1)" type="danger" class="w-full" icon="Minus"> Remove Resource </el-button>
                 </div>
             </template>
 
@@ -40,7 +43,6 @@ import { onMounted, reactive, ref } from 'vue';
 import { DropTableStore } from '@/stores/store';
 
 const dropTableStore = DropTableStore();
-console.log(Object.keys(dropTableStore.data))
 
 let idForm = reactive({
     id: ''
@@ -59,14 +61,11 @@ function createNewTableEntry(){
     })));
 }
 
-function saveDropTable(){
-    dropTableStore.saveDropTable(JSON.parse(JSON.stringify(newForm)))
-    newForm.id = "";
-    newForm.table = []
-}
 
-function removeNewTableEntry(index: number){
-    newForm.table.splice(index, 1)
+function updateForm(){
+    let existing = JSON.parse(JSON.stringify(dropTableStore.data[newForm.id]));
+    newForm.id = existing.id
+    newForm.table = existing.table
 }
 
 </script>

@@ -6,12 +6,12 @@
                     <p class="text-sm text-right">{{ key }}</p>
                 </el-col>
                 <el-col :span="24 - labelWidth">
-                    <el-input @input="checkIfExists()" v-model="form[key]" v-if="(typeof input === typeof 'string')"></el-input>
-                    <el-input-number @input="checkIfExists()" v-model="form[key]" v-else-if="(typeof input === typeof 1)"></el-input-number>
-                    <el-select @input="checkIfExists()" v-model="form[key].value" v-else-if="(typeof input === typeof {})">
+                    <el-input @input="checkIfExists(key)" v-model="form[key]" v-if="(typeof input === typeof 'string')"></el-input>
+                    <el-input-number @input="checkIfExists(key)" v-model="form[key]" v-else-if="(typeof input === typeof 1)"></el-input-number>
+                    <el-select @input="checkIfExists(key)" v-model="form[key].value" v-else-if="(typeof input === typeof {})">
                         <el-option v-for="(val, key, index) in input.options" :value="val"> {{ key }} </el-option>
                     </el-select>
-                    <el-switch @input="checkIfExists()" v-if="(typeof input === typeof true)" v-model="form[key]" active-text="True" inactive-text="False" />
+                    <el-switch @input="checkIfExists(key)" v-if="(typeof input === typeof true)" v-model="form[key]" active-text="True" inactive-text="False" />
                 </el-col>
             </el-row>
         </template>
@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { ref, type PropType } from 'vue';
 
-
+const emit = defineEmits(['saveClicked', 'isUpdatable'])
 
 const props = defineProps({
     form: {
@@ -74,9 +74,13 @@ const props = defineProps({
 
 
 let inExistingList = ref(false)
-function checkIfExists(){
+function checkIfExists(key: string){
+    if (key != props.existingKey){
+        return false;
+    }
     if (props.existingList.includes(props.form[props.existingKey]) ){
         inExistingList.value = true;
+        emit('isUpdatable')
     } else {
         inExistingList.value = false;
     }
