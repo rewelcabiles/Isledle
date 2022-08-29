@@ -65,7 +65,7 @@ import EntriesLog from './Entries/EntriesLog.vue';
 
 import DataDisplayVue from '@/components/Developer/DataDisplay.vue';
 
-import { ref, getCurrentInstance, reactive } from 'vue';
+import { ref, getCurrentInstance } from 'vue';
 import game_config from '@/config/game_config.json'
 
 import {
@@ -99,34 +99,34 @@ const stores = {
 const editorPanes = {
     "Log": {
         edit: EditorLog,
-        view: reactive(EntriesLog),
+        view: EntriesLog,
         deleteFunction: null,
         data: {}
     },
     "Resource": {
         edit: EditorResourceVue,
-        view: reactive(DataDisplayVue),
+        view: DataDisplayVue,
         data: resourceStore.data,
         deleteFunction: resourceStore.deleteResource,
         deleteKey: "name"
     },
     "Flag": {
         edit: EditorFlag,
-        view: reactive(DataDisplayVue),
+        view: DataDisplayVue,
         data: flagStore.data,
         deleteFunction: flagStore.deleteEntry,
         deleteKey: "id"
     },
     "Drop Table": {
         edit: EditorDropTable,
-        view: reactive(DataDisplayVue),
+        view: DataDisplayVue,
         data: dropTableStore.data,
         deleteFunction: dropTableStore.deleteEntry,
         deleteKey: "id"
     },
     "Location": {
         edit: EditorLocation,
-        view: reactive(DataDisplayVue),
+        view: DataDisplayVue,
         data: locationStore.data,
         deleteFunction: locationStore.deleteEntry,
         deleteKey: "name"
