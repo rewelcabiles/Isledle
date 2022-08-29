@@ -3,23 +3,27 @@
         <el-button type="primary" link  @click="startHarvest">
             {{ label }}
         </el-button>
-        <el-progress v-if="state.is_harvesting" class="w-100 mt-2" :percentage="state.percentage" :show-text="false" />
+        <el-progress v-visible="state.is_harvesting" class="mt-2 w-2/3" :percentage="percentage" :show-text="false" />
     </div>
 
 </template>
 <script setup lang='ts'>
 import { useResourceStore } from '@/stores/resourceStore';
 import { useGameStore } from '@/stores/gameStore';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { ActionStore } from '@/stores/store';
-import type { argModifyResourceInterface, argRollDropTableInterface } from '@/models/actionInterfaces';
-import type { DropTableInterface } from '@/stores/dropTableStore';
+import type { argRollDropTableInterface } from '@/models/actionInterfaces';
 
 const resourceStore = useResourceStore();
 const gameStore = useGameStore();
 const actionStore = ActionStore();
 
 const step = 8;
+
+const vVisible = {
+    updated: (el: any, binding: any) => el.style.visibility = !!binding.value ? 'visible' : 'hidden',
+    mounted: (el: any, binding: any) => el.style.visibility = !!binding.value ? 'visible' : 'hidden',
+}
 
 const props = defineProps({
     label: {
@@ -38,9 +42,10 @@ const props = defineProps({
     }
 })
 
+const percentage = ref(0);
+
 const state = reactive({
-    is_harvesting: false,
-    percentage: 0,
+    is_harvesting: false
 });
 
 const emit = defineEmits(['harvested'])
@@ -52,8 +57,10 @@ function endharvest() {
             "id": props.drop_table
         } as argRollDropTableInterface
     }]);
-    state.is_harvesting = false;
-    state.percentage = 0;
+    setTimeout(() => {
+        state.is_harvesting = false;
+        percentage.value = 0;
+    }, 500)
     emit('harvested');
 }
 
@@ -67,8 +74,9 @@ function startHarvest() {
 }
 
 function harvestStep() {
-    state.percentage = state.percentage + step;
-    if (state.percentage > 120) {
+    percentage.value += step;
+    if (percentage.value >= 100) {
+        percentage.value = 100
         endharvest();
     } else {
         setTimeout(harvestStep, 120);
@@ -77,5 +85,4 @@ function harvestStep() {
 
 </script>
 <style scoped>
-
 </style>
