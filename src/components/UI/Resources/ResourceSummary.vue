@@ -1,17 +1,20 @@
 <template>
-    <div id="ui_resource_summary" class="pointer-events-auto grid grid-cols-2">
-        <div v-for="(resource, label, index) in resourceStore.resource_data">
+    <div id="ui_resource_summary" class="pointer-events-auto flex flex-col gap-2">
+        <div v-for="(resource, label, index) in resourceStore.unlockedResources" class="px-2 mb-1 ">
             <transition name="el-fade-in-linear">
-                <div v-if="resource.unlocked" class="p-2 rounded-l-md mb-1 ">
+                <template v-if="resource.unlocked">
                     <el-row>
                         <el-col :span="12">
                             {{ resource.name }} 
                         </el-col>
-                        <el-col :span="12">
-                            {{ resource.stock }} / 5000
+                        <el-col :span="12" class="flex flex-row">
+                            <resource-summary-change :resource="resource.name" />
+                            <div class="ml-auto">
+                                {{ resource.stock }} / 5000
+                            </div>
                         </el-col>
                     </el-row>
-                </div>
+                </template>
             </transition>
         </div>
     </div>
