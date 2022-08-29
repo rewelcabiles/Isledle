@@ -35,8 +35,9 @@ export const useDropTableStore = defineStore('Drop Table', () => {
   
   function rollDropTable(args: argRollDropTableInterface){
     let droppedItems = {} as { [ key: resourceInterface['name'] ]: number };
-    if (!Object.keys(data).includes(args.id)){
+    if (!Object.keys(data.value).includes(args.id)){
       console.error("DROP TABLE STORE: Does not exist in data id: ", args.id)
+      return
     }
     data.value[args.id].table.forEach( drop => {
       droppedItems[drop.name] = 0;
@@ -48,6 +49,9 @@ export const useDropTableStore = defineStore('Drop Table', () => {
     });
     
     Object.keys(droppedItems).forEach( key => {
+      if (droppedItems[key] == 0){
+        return;
+      }
       mainMessageBus.notify({
         type: "modifyResource" ,
         args: {
