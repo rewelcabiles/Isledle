@@ -30,8 +30,8 @@ export const useResourceStore = defineStore('Resource', () => {
   actionStore.messageBus.attach(messageBus.value)
 
   // === COMPUTED === ///
-  const unlockedResources = computed(() => Object.values(data.value).filter(resource => resource.unlocked).length > 0)
-
+  const isUnlocked = computed(() => Object.values(data.value).filter(resource => resource.unlocked).length > 0)
+  const unlockedResources = computed(() => Object.values(data.value).filter(resource => resource.unlocked))
   
 
   // === FUNCTIONS === ///
@@ -56,6 +56,9 @@ export const useResourceStore = defineStore('Resource', () => {
         data.value[args.name].stock -= args.value
         break;
     }
+    if (!data.value[args.name].unlocked){
+      data.value[args.name].unlocked = true
+    }
   }
 
   function deleteResource(resource_name: resourceInterface['name']){
@@ -74,5 +77,6 @@ export const useResourceStore = defineStore('Resource', () => {
     createResource,
     deleteResource,
     unlockedResources,
+    isUnlocked
   }
 });
