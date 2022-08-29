@@ -22,13 +22,13 @@ import { useResourceStore } from '@/stores/resourceStore';
 let resourceStore = useResourceStore();
 
 
-const tabs = reactive({
+const tabs = {
     "Locations": {
         label: 'Locations',
         component: ActionsHarvestResources,
         visible: computed(() => resourceStore.isUnlocked),
     },
-});
+};
 
 let hasVisibleTabs = reactive({
     value: computed(() => Object.values(tabs).filter(tab => tab.visible).length > 0),
