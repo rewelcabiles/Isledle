@@ -1,7 +1,7 @@
 <template>
 <div class="flex flex-col pointer-events-auto">
         <Transition name="el-fade-in-linear">
-            <div v-show="flagStore.flag_data.intro_1" class="flex flex-col">
+            <div v-show="flagStore.data.intro_1" class="flex flex-col">
                 <p class="mx-auto py-2 uppercase"> Your {{ gameStore.base_type }} </p>
                 <hr class="border-zinc-500">
                 <div class="flex flex-row p-2 bg_1 border-l-2 border-black">

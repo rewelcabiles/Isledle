@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col grow ">
-        <div v-for="(resource, index) in resourceStore.resource_data" :key="index">
+        <div v-for="(resource, index) in resourceStore.data" :key="index">
             <transition name="el-fade-in-linear">
                 <div class="w-full mb-2 shadow-md p-3">
                     <div class="flex flex-row align-middle text-sm">

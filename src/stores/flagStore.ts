@@ -10,8 +10,9 @@ interface FlagInterface {
   [key: string] : boolean
 }
 
-export const useProgressionStore = defineStore('flags', () => {
-  const flag_data = ref(useStorage('flag_data', IsledleData.flag_data as FlagInterface))
+export const useProgressionStore = defineStore('Flag', () => {
+  const dataName = "flags"
+  const data = ref(useStorage('flag_data', IsledleData[dataName] as FlagInterface))
   const messageBus = ref(new MessageBus({
     'setFlag': setFlag
   }));
@@ -20,18 +21,19 @@ export const useProgressionStore = defineStore('flags', () => {
   actionStore.messageBus.attach(messageBus.value)
 
   function setFlag(args: argSetFlagInterface) {
-    flag_data.value[args.id] = args.value;
+    data.value[args.id] = args.value;
   }
-  function deleteFlag(flag_id: argSetFlagInterface['id']) {
-    delete flag_data.value[flag_id];
+  function deleteEntry(flag_id: argSetFlagInterface['id']) {
+    delete data.value[flag_id];
   }
   function resetData(){
-    flag_data.value = IsledleData.flag_data as FlagInterface
+    data.value = IsledleData[dataName] as FlagInterface
   }
   return {
-    flag_data,
+    data,
     setFlag,
-    deleteFlag,
-    resetData
+    deleteEntry,
+    resetData,
+    dataName
   }
 });

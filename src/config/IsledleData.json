@@ -1,5 +1,26 @@
 {
-	"resource_data": {
+	"locations": {
+		"asdasd": {
+			"name":"bat guano",
+			"unlocked": false,
+			"specialInteractName": "dsadsa",
+			"dropTable": "wooo",
+			"specialDropTable": "test"
+		}
+	},
+	"dropTables": {
+		"forest": {
+			"id": "forest",
+			"table": [
+				{
+					"name": "wood",
+					"maxQuantity": 4,
+					"chance": 40
+				}
+			]
+		}
+	},
+	"resources": {
 		"wood": {
 			"name": "wood",
 			"stock": 0,
@@ -16,11 +37,11 @@
 			"unlocked": false
 		}
 	},
-	"flag_data": {
+	"flags": {
 		"intro_1": false,
 		"intro_started": false
 	},
-	"log_data": {
+	"logs": {
 		"lg_intro_1": {
 			"id": "lg_intro_1",
 			"text": "You wake in the night...",

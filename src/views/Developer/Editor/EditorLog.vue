@@ -100,7 +100,6 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { useDeveloperStore } from '@/stores/developerStore';
 import { LogStore, ActionStore } from '@/stores/store';
 import type { ActionInterface } from '@/models/actionInterfaces';
 
@@ -147,7 +146,7 @@ function saveLog(){
 
 
 function checkIfIDExists() {
-    if (Object.keys(logStore.log_data).includes(log_form.id)) {
+    if (Object.keys(logStore.data).includes(log_form.id)) {
         isUpdateMode.value = true;
         fetchData();
     } else {
@@ -156,7 +155,7 @@ function checkIfIDExists() {
 }
 
 function fetchData() {
-    let log = JSON.parse(JSON.stringify(logStore.log_data[log_form.id]));
+    let log = JSON.parse(JSON.stringify(logStore.data[log_form.id]));
     log_form.id = log.id;
     log_form.text = log.text;
     log_form.options = log.options;

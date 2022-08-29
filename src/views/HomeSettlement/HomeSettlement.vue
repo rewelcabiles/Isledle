@@ -23,14 +23,14 @@ const actionStore = ActionStore();
 
 
 onMounted(() => {
-    if (!flagStore.flag_data['intro_started']){
+    if (!flagStore.data['intro_started']){
         actionStore.sendActionsToBus([{
             "type": "showLog",
             "args": {
                 "id": "lg_intro_1"
             } as argShowLogInterface
         }])
-        flagStore.flag_data['intro_started'] = true;
+        flagStore.data['intro_started'] = true;
     }
     actionStore.sendActionsToBus([{
         "type" : "rollDropTable",

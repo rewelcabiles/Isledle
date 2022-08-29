@@ -4,7 +4,7 @@
             <el-tabs tab-position="left" class="w-full" >
                 <template v-for="(tab, label, index) in tabs" :key="index">
                     <transition name="el-fade-in-linear">
-                        <el-tab-pane class="transition-all duration-200" v-if="tab.visible" :label="label" style="--el-tab-pane-text-color: red">
+                        <el-tab-pane :key="index" class="transition-all duration-200" v-if="tab.visible" :label="label">
                             <component :is="tab.component" />
                         </el-tab-pane>
                     </transition>

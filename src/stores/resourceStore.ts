@@ -13,10 +13,14 @@ export interface resourceInterface {
   unlocked: boolean
 }
 
-export const useResourceStore = defineStore('resource', () => {
+interface dataInterface {
+  [ key:string ]: resourceInterface
+}
 
+export const useResourceStore = defineStore('Resource', () => {
+  const dataName = "resources"
   // === STATE === ///
-  const resource_data = ref(useStorage('resource_data', IsledleData.resource_data as { [key: string]: resourceInterface }))
+  const data = ref(useStorage('resource_data', IsledleData[dataName] as dataInterface))
   const messageBus = ref(new MessageBus({
     'modifyResource': modifyResource,
     'setLockResource': setResourceLock
@@ -26,46 +30,47 @@ export const useResourceStore = defineStore('resource', () => {
   actionStore.messageBus.attach(messageBus.value)
 
   // === COMPUTED === ///
-  const unlockedResources = computed(() => Object.values(resource_data.value).filter(resource => resource.unlocked).length > 0)
+  const unlockedResources = computed(() => Object.values(data.value).filter(resource => resource.unlocked).length > 0)
 
   
 
   // === FUNCTIONS === ///
   function getResource(resource_name: resourceInterface['name']) {
-    return resource_data.value[resource_name];
+    return data.value[resource_name];
   }
  
   function setResourceLock(args: argSetLockResourceInterface) {
-    resource_data.value[args.name].unlocked = args.unlocked;
+    data.value[args.name].unlocked = args.unlocked;
   }
 
   function resetData() {
-    resource_data.value = IsledleData.resource_data as { [key: string]: resourceInterface }
+    data.value = IsledleData[dataName] as dataInterface
   }
   
   function modifyResource(args: argModifyResourceInterface){
     switch(args.modify){
       case 'add':
-        resource_data.value[args.name].stock += args.value
+        data.value[args.name].stock += args.value
         break;
       case 'subtract':
-        resource_data.value[args.name].stock -= args.value
+        data.value[args.name].stock -= args.value
         break;
     }
   }
 
   function deleteResource(resource_name: resourceInterface['name']){
-    delete resource_data.value[resource_name];
+    delete data.value[resource_name];
   }
   function createResource(resource: resourceInterface){
-    resource_data.value[resource.name] = resource;
+    data.value[resource.name] = resource;
   }
 
   return {
     resetData,
+    dataName,
+    data,
     messageBus,
     getResource,
-    resource_data,
     createResource,
     deleteResource,
     unlockedResources,

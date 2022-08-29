@@ -29,9 +29,9 @@ interface logDataInterface{
 }
 
 export const useLogStore = defineStore( 'logs', () => {
-
+  const dataName = "logs"
   const logs = ref(useStorage('logs', [] as logInterface[]))
-  const log_data = ref(useStorage('log_data', IsledleData.log_data as logDataInterface))
+  const data = ref(useStorage('log_data', IsledleData[dataName] as logDataInterface))
   
   
   const messageBus = ref(new MessageBus({
@@ -43,11 +43,11 @@ export const useLogStore = defineStore( 'logs', () => {
 
 
   function getLog(id:string) {
-      return log_data.value[id];
+      return data.value[id];
   }
 
   function addLog(arg: argShowLogInterface) {
-    if (Object.keys(log_data.value).includes(arg.id)){
+    if (Object.keys(data.value).includes(arg.id)){
       logs.value.push( getLog(arg.id) );
     } else {
       console.error(`LOG-STORE: Does not exist in log_data: ${arg.id}`);
@@ -55,17 +55,24 @@ export const useLogStore = defineStore( 'logs', () => {
   }
 
   function resetData() {
-    log_data.value = IsledleData.log_data as logDataInterface;
+    data.value = IsledleData[dataName] as logDataInterface;
     logs.value = []
   }
 
   function createLog(new_log: logInterface){
-    log_data.value[new_log.id] = new_log
+    data.value[new_log.id] = new_log
   }
 
   function removeLogFromData(id: keyof logDataInterface){
-    delete log_data.value[id];
+    delete data.value[id];
   }
 
-  return { resetData, createLog, removeLogFromData, log_data, logs}
+  return {
+    resetData,
+    createLog,
+    removeLogFromData,
+    data,
+    logs,
+    dataName
+  }
 });

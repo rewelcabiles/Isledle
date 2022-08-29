@@ -1,28 +1,8 @@
 <template>
-    <div class="flex flex-row h-screen overflow-hidden mx-5">
-        <!--------- ENTRIES ----------->
-        <!------------------------------->
-        <div class="w-full h-full flex flex-col grow pt-4">
-            <p class="font-bold text-xl border-b-2">
-                Entries
-            </p>
-
-            <el-tabs v-model="currentLeftPaneTab" class="h-full grow">
-                <el-tab-pane label="Logs" name="log" class="h-full flex flex-col grow">
-                    <EntriesLog />
-                </el-tab-pane>
-                <el-tab-pane label="Resources" name="resources" class="h-full">
-                    <EntriesResources />
-                </el-tab-pane>
-                <el-tab-pane label="Progress Flags" name="progress_flags" class="h-full">
-                    <EntriesFlags/>
-                </el-tab-pane>
-            </el-tabs>
-        </div>
-
+    <div class="flex flex-row h-screen mx-5 overflow-hidden">
         <!--------- ACTIONS ----------->
         <!------------------------------->
-        <div class="w-full h-full flex flex-col pt-4 border-x-2">
+        <div class="w-1/3 h-full flex flex-col pt-4">
             <div class="flex flex-row ">
                 <p class="font-bold text-lg mr-auto">
                     JSON
@@ -30,45 +10,39 @@
                 <el-switch class="mr-2" v-model="editableJson" active-text="Editable" />
             </div>
             <div class="w-full p-0 flex flex-col grow overflow-auto">
-                <p class="font-bold mx-auto">Resources</p>
-                <VueJsonPretty class="mb-10" :data="resourceStore.resource_data" :collapsedOnClickBrackets="true" :editable="editableJson"/>
-                <p class="font-bold mx-auto">Flags</p>
-                <VueJsonPretty class="mb-10" :data="flagStore.flag_data" :collapsedOnClickBrackets="true" :editable="editableJson"/>
-                <p class="font-bold mx-auto">Logs</p>
-                <VueJsonPretty class="mb-10" :data="logStore.log_data" :collapsedOnClickBrackets="true" :editable="editableJson"/>
-                <p class="font-bold mx-auto">Drop Table</p>
-                <VueJsonPretty class="mb-10" :data="dropTableStore.dropTableData" :collapsedOnClickBrackets="true" :editable="editableJson"/>
+                <template v-for="store in stores">
+                    <p class="font-bold mx-auto"> {{ store.$id }}</p>
+                    <VueJsonPretty class="mb-10" :data="store.data" :collapsedOnClickBrackets="true" :editable="editableJson"/>
+                </template>
+                
+                
             </div>
         </div>
 
         <!--------- EDITOR PANE ---------->
         <!------------------------------->
-        <div class="w-full pt-4">
+        <div class="w-full h-full py-4">
             <div class="flex flex-row border-b-2">
-                <p class="font-bold text-xl pl-4">
-                    Editor
+                <p class="text-xl pl-4">
+                    <b>{{ game_config.game_name }}</b> - Content Management Page
                 </p>
                 <div class="ml-auto">
+                    <el-button type="success" link icon="Back" @click="$router.push('/')">Back to game</el-button>
                     <el-button type="primary" link icon="Delete" @click="clearLocalStorage()">Clear Cache</el-button>
                     <el-button type="primary" link icon="Bottom" @click="downloadFiles()">Download JSON</el-button>
                 </div>
             </div>
 
-            <el-tabs v-model="currentNew" class="h-full px-4" tab-position="right">
-                <el-tab-pane label="Log" name="newLog" class="h-full pt-4">
-                    <EditorLog />
-                </el-tab-pane>
-
-                <el-tab-pane label="Resource" name="newResource" class="pt-4">
-                    <EditResource/>
-                </el-tab-pane>
-
-                <el-tab-pane label="Flag" name="newFlag" class="pt-4">
-                    <EditorFlag/>
-                </el-tab-pane>
-
-                <el-tab-pane label="Drop Table" name="newDropTable" class="pt-4">
-                    <EditorDropTable />
+            <el-tabs v-model="currentNew" class="h-full px-4 developer" tab-position="right">
+                <el-tab-pane v-for="(v, k, i) in editorPanes" :label="k" :name="k" class="h-full">
+                    <div class="flex flex-row h-full">
+                        <div class="w-full h-full flex flex-col px-5 overflow-auto pt-5">
+                            <component :is="v.view" :data="v.data" :deleteFunction="v.deleteFunction"></component>
+                        </div>
+                        <div class="w-full h-full flex flex-col px-5 overflow-auto pt-5">
+                            <component :is="v.edit"></component>
+                        </div>
+                    </div>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -85,45 +59,109 @@ import EditResource from './Editor/EditorResource.vue';
 import EditorFlag from './Editor/EditorFlag.vue';
 import EditorLog from './Editor/EditorLog.vue';
 import EditorDropTable from './Editor/EditorDropTable.vue'
+import EditorLocation from './Editor/EditorLocation.vue';
 
-import EntriesFlags from './Entries/EntriesFlags.vue';
-import EntriesResources from './Entries/EntriesResources.vue';
 import EntriesLog from './Entries/EntriesLog.vue';
 
-import { ref, getCurrentInstance } from 'vue';
+import DataDisplayVue from '@/components/Developer/DataDisplay.vue';
+
+import { ref, getCurrentInstance, reactive } from 'vue';
+import game_config from '@/config/game_config.json'
 
 import {
-    DeveloperStore,
     DropTableStore,
     FlagStore,
     LogStore,
-    ResourceStore
+    ResourceStore,
 } from '@/stores/store';
+import EditorResourceVue from './Editor/EditorResource.vue';
+import { useLocationStore } from '@/stores/locationStore';
+import type { defineStore } from 'pinia';
 
 
-const developerStore = DeveloperStore();
+let currentNew = ref('Log');
+
 const resourceStore = ResourceStore();
 const logStore = LogStore();
 const flagStore = FlagStore();
 const dropTableStore = DropTableStore();
+const locationStore = useLocationStore();
 
-let currentNew = 'newLog';
-let currentLeftPaneTab = 'log';
-let currentMiddlePaneTab = 'actions';
+const stores = {
+    resources: resourceStore,
+    logs: logStore,
+    flags: flagStore,
+    dropTables: dropTableStore,
+    locations: locationStore
+};
+
+
+const editorPanes = {
+    "Log": {
+        edit: EditorLog,
+        view: reactive(EntriesLog),
+        deleteFunction: null,
+        data: {}
+    },
+    "Resource": {
+        edit: EditorResourceVue,
+        view: reactive(DataDisplayVue),
+        data: resourceStore.data,
+        deleteFunction: resourceStore.deleteResource,
+        deleteKey: "name"
+    },
+    "Flag": {
+        edit: EditorFlag,
+        view: reactive(DataDisplayVue),
+        data: flagStore.data,
+        deleteFunction: flagStore.deleteEntry,
+        deleteKey: "id"
+    },
+    "Drop Table": {
+        edit: EditorDropTable,
+        view: reactive(DataDisplayVue),
+        data: dropTableStore.data,
+        deleteFunction: dropTableStore.deleteEntry,
+        deleteKey: "id"
+    },
+    "Location": {
+        edit: EditorLocation,
+        view: reactive(DataDisplayVue),
+        data: locationStore.data,
+        deleteFunction: locationStore.deleteEntry,
+        deleteKey: "name"
+    }
+}
+
 let editableJson = ref(false);
 
 function clearLocalStorage() {
-    developerStore.setToDefault();
+    Object.values(stores).forEach( s => {
+        console.log(s.$id)
+        s.resetData()
+    });
     const instance = getCurrentInstance();
     instance?.proxy?.$forceUpdate();
 }
 
 function downloadFiles(){
-    developerStore.download();
+    let a = document.createElement("a");
+    let toOutput = {} as { [key: string]: typeof defineStore}
+    Object.values(stores).forEach( store => {
+        toOutput[store.dataName] = store.data
+    });
+    const blob = new Blob([JSON.stringify(toOutput, null, '\t')], {type: "text/plain;charset=utf-8"});
+    a.href = URL.createObjectURL(blob);
+    a.download = "IsledleData.json";
+    a.click();
 }
 
 
-</script>
-<style scoped>
 
+
+</script>
+<style>
+    .developer.el-tabs__content {
+        height: 100vh !important
+    }
 </style>

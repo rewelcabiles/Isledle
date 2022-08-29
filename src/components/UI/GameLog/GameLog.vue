@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col pointer-events-auto">
         <Transition name="el-fade-in-linear">
-            <div v-show="flagStore.flag_data.intro_1" class="flex flex-col">
+            <div v-show="flagStore.data.intro_1" class="flex flex-col">
                 <p class="mx-auto py-2 uppercase"> {{ game_config.game_name }} </p>
                 <hr class="border-zinc-500">
                 <div class="flex flex-row p-2 bg_1">
@@ -22,8 +22,7 @@
                             <a
                             v-for="(option, index) in log.options"
                             :key="index"
-                            href="#"
-                            class="text-zinc-500 hover:text-zinc-600 text-sm underline"
+                            class="text-zinc-500 hover:text-zinc-600 text-sm underline cursor-pointer"
                             @click="actionStore.sendActionsToBus(option.actions); log.disabled = true; gameStore.incrementTime()">
                                 {{ option.label }}
                             </a>
