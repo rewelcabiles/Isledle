@@ -63,16 +63,21 @@ import EditorLocation from './Editor/EditorLocation.vue';
 import EntriesLog from './Entries/EntriesLog.vue';
 
 import DataDisplayVue from '@/components/Developer/DataDisplay.vue';
-import { ref, getCurrentInstance } from 'vue';
+import { ref, watch, getCurrentInstance } from 'vue';
 import game_config from '@/config/game_config.json'
 import EditorResourceVue from './Editor/EditorResource.vue';
- 
+import { useRouter, useRoute } from 'vue-router'
+
 import { mainStore } from '@/stores/mainStore';
 const store = mainStore();
+const router = useRouter()
+const route = useRoute();
+let currentNew = ref(route.query.tab ? route.query.tab : 'Log');
 
-
-
-let currentNew = ref('Log');
+watch(currentNew, (newVal, oldVal) => {
+    currentNew.value = newVal
+    router.push({query: {tab: currentNew.value}})
+});
 
 const stores = {
     resources: store.resources,
