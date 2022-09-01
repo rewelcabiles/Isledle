@@ -11,7 +11,7 @@
             </div>
             <div class="w-full p-0 flex flex-col grow overflow-auto">
                 <template v-for="store in stores">
-                    <p class="font-bold mx-auto"> {{ store.$id }}</p>
+                    <p class="font-bold mx-auto"> {{ store.store.$id }}</p>
                     <VueJsonPretty class="mb-10" :data="store.data" :collapsedOnClickBrackets="true" :editable="editableJson"/>
                 </template>
                 
@@ -50,7 +50,6 @@
 </template>
 
 <script setup lang='ts'>
-
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
 
@@ -64,35 +63,23 @@ import EditorLocation from './Editor/EditorLocation.vue';
 import EntriesLog from './Entries/EntriesLog.vue';
 
 import DataDisplayVue from '@/components/Developer/DataDisplay.vue';
-
 import { ref, getCurrentInstance } from 'vue';
 import game_config from '@/config/game_config.json'
-
-import {
-    DropTableStore,
-    FlagStore,
-    LogStore,
-    ResourceStore,
-} from '@/stores/store';
 import EditorResourceVue from './Editor/EditorResource.vue';
-import { useLocationStore } from '@/stores/locationStore';
-import type { defineStore } from 'pinia';
+ 
+import { mainStore } from '@/stores/mainStore';
+const store = mainStore();
+
 
 
 let currentNew = ref('Log');
 
-const resourceStore = ResourceStore();
-const logStore = LogStore();
-const flagStore = FlagStore();
-const dropTableStore = DropTableStore();
-const locationStore = useLocationStore();
-
 const stores = {
-    resources: resourceStore,
-    logs: logStore,
-    flags: flagStore,
-    dropTables: dropTableStore,
-    locations: locationStore
+    resources: store.resources,
+    logs: store.logs,
+    flags: store.flags,
+    dropTables: store.dropTables,
+    locations: store.locations
 };
 
 
@@ -106,29 +93,29 @@ const editorPanes = {
     "Resource": {
         edit: EditorResourceVue,
         view: DataDisplayVue,
-        data: resourceStore.data,
-        deleteFunction: resourceStore.deleteResource,
+        data: store.resources.data,
+        deleteFunction: store.resources.deleteEntry,
         deleteKey: "name"
     },
     "Flag": {
         edit: EditorFlag,
         view: DataDisplayVue,
-        data: flagStore.data,
-        deleteFunction: flagStore.deleteEntry,
+        data: store.flags.data,
+        deleteFunction: store.flags.deleteEntry,
         deleteKey: "id"
     },
     "Drop Table": {
         edit: EditorDropTable,
         view: DataDisplayVue,
-        data: dropTableStore.data,
-        deleteFunction: dropTableStore.deleteEntry,
+        data: store.dropTables.data,
+        deleteFunction: store.dropTables.deleteEntry,
         deleteKey: "id"
     },
     "Location": {
         edit: EditorLocation,
         view: DataDisplayVue,
-        data: locationStore.data,
-        deleteFunction: locationStore.deleteEntry,
+        data: store.locations.data,
+        deleteFunction: store.locations.deleteEntry,
         deleteKey: "name"
     }
 }
@@ -137,7 +124,6 @@ let editableJson = ref(false);
 
 function clearLocalStorage() {
     Object.values(stores).forEach( s => {
-        console.log(s.$id)
         s.resetData()
     });
     const instance = getCurrentInstance();

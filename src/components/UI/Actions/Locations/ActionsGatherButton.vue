@@ -8,15 +8,12 @@
 
 </template>
 <script setup lang='ts'>
-import { useResourceStore } from '@/stores/resourceStore';
-import { useGameStore } from '@/stores/gameStore';
 import { reactive, ref } from 'vue';
-import { ActionStore } from '@/stores/store';
 import type { argRollDropTableInterface } from '@/models/actionInterfaces';
 
-const resourceStore = useResourceStore();
-const gameStore = useGameStore();
-const actionStore = ActionStore();
+import { mainStore } from '@/stores/mainStore';
+const store = mainStore();
+
 
 const step = 8;
 
@@ -51,7 +48,7 @@ const state = reactive({
 const emit = defineEmits(['harvested'])
 
 function endharvest() {
-    actionStore.sendActionsToBus([{
+    store.actionStore.sendActionsToBus([{
         "type": "rollDropTable",
         "args": {
             "id": props.drop_table
@@ -68,7 +65,7 @@ function startHarvest() {
     if (state.is_harvesting) {
         return;
     }
-    gameStore.incrementTime();
+    store.gameStore.incrementTime();
     state.is_harvesting = true;
     setTimeout(harvestStep, 120);
 }

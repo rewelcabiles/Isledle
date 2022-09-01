@@ -1,10 +1,5 @@
 import { defineStore } from "pinia";
-import { reactive, ref } from 'vue';
-import {
-  LogStore,
-  FlagStore,
-  ResourceStore,
-} from "./store";
+import { ref } from 'vue';
 
 import type {
   ActionInterface,
@@ -66,5 +61,9 @@ export const useActionStore = defineStore('action', () => {
     }));
   }
 
-  return { messageBus, getActionTypes, sendActionsToBus}
+  return {
+    messageBus,
+    getActionTypes,
+    sendActionsToBus
+  }
 });

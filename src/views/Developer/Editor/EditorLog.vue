@@ -77,7 +77,7 @@
                         </el-col>
                         <el-col :span="21">
                             <el-select class="w-full" size="small" placeholder="Action Type" v-model="option.actions[idx]">
-                                <el-option v-for="(value, key, index) in actionStore.getActionTypes()" :value="value" :key="index" :label="key" ></el-option>
+                                <el-option v-for="(value, key, index) in store.actionStore.getActionTypes()" :value="value" :key="index" :label="key" ></el-option>
                             </el-select>
                         </el-col>
                     </el-row>
@@ -100,11 +100,10 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { LogStore, ActionStore } from '@/stores/store';
 import type { ActionInterface } from '@/models/actionInterfaces';
+import { mainStore } from '@/stores/mainStore';
+const store = mainStore();
 
-const logStore = LogStore();
-const actionStore = ActionStore();
 
 let log_form = reactive({
     id: '',
@@ -134,7 +133,7 @@ function removeAction(action: any[], index: number): void {
 }
 
 function saveLog(){
-    logStore.createLog({
+    mainStore().logs.addEntry({
         id: log_form.id,
         text: log_form.text,
         options: log_form.options,
@@ -146,7 +145,7 @@ function saveLog(){
 
 
 function checkIfIDExists() {
-    if (Object.keys(logStore.data).includes(log_form.id)) {
+    if (Object.keys(store.logs.data).includes(log_form.id)) {
         isUpdateMode.value = true;
         fetchData();
     } else {
@@ -155,7 +154,7 @@ function checkIfIDExists() {
 }
 
 function fetchData() {
-    let log = JSON.parse(JSON.stringify(logStore.data[log_form.id]));
+    let log = JSON.parse(JSON.stringify(store.logs.data[log_form.id]));
     log_form.id = log.id;
     log_form.text = log.text;
     log_form.options = log.options;

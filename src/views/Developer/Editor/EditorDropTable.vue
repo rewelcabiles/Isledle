@@ -4,10 +4,10 @@
         class="mb-5"
         :formTemplate="idForm"
         :form="newForm"
-        :existingList="Object.keys(dropTableStore.data)"
+        :existingList="Object.keys(store.dropTables.data)"
         
         existingKey="id"
-        @save-clicked="dropTableStore.saveDropTable(JSON.parse(JSON.stringify(newForm)))"
+        @save-clicked="store.dropTables.store.saveDropTable(JSON.parse(JSON.stringify(newForm)))"
         @is-updatable="updateForm()"
         >
 
@@ -39,12 +39,12 @@
 </template>
 
 <script setup lang="ts">
-import type { DropTableInterface, DropTableEntryInterface } from '@/stores/dropTableStore';
+import type { DropTableEntryInterface } from '@/stores/dropTableStore';
 import DynamicFormVue from '@/components/Developer/DynamicForm.vue';
-import { onMounted, reactive, ref } from 'vue';
-import { DropTableStore } from '@/stores/store';
+import { reactive } from 'vue';
+import { mainStore } from '@/stores/mainStore';
+const store = mainStore();
 
-const dropTableStore = DropTableStore();
 
 let idForm = reactive({
     id: ''
@@ -65,7 +65,7 @@ function createNewTableEntry(){
 
 
 function updateForm(){
-    let existing = JSON.parse(JSON.stringify(dropTableStore.data[newForm.id]));
+    let existing = JSON.parse(JSON.stringify(store.dropTables.data[newForm.id]));
     newForm.id = existing.id
     newForm.table = existing.table
 }

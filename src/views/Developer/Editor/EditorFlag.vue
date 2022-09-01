@@ -2,7 +2,7 @@
     <div class="text-sm">
         <h1 class="font-bold">Flag Name</h1>
         <el-input placeholder="flag_here" v-model="flag_form.id" @input="checkIfFlagExists()" class="mb-2"></el-input>
-        <h1 class="font-bold mt-5">Default State</h1>
+        <h1 class="font-bold mt-5">Default S     tate</h1>
         <el-switch
             v-model="flag_form.value"
             active-text="True"
@@ -15,9 +15,9 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { FlagStore } from '@/stores/store';
+ import { mainStore } from '@/stores/mainStore';
+const store = mainStore();
 
-const flagStore = FlagStore();
 
 let flag_exists = ref(false);
 let flag_form = reactive({
@@ -26,7 +26,7 @@ let flag_form = reactive({
 });
 
 function addFlag() {
-    flagStore.setFlag({
+    store.flags.store.setFlag({
         id: flag_form.id,
         value: flag_form.value,
     });
@@ -37,7 +37,7 @@ function addFlag() {
 }
 
 function checkIfFlagExists(){
-    if (Object.keys(flagStore.data).includes(flag_form.id)){
+    if (Object.keys(store.flags.data).includes(flag_form.id)){
         flag_exists.value = true;
     } else {
         flag_exists.value = false;

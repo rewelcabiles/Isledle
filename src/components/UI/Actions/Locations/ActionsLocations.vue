@@ -1,6 +1,6 @@
 <template>
     <div class="overflow-auto grid grid-cols-4">
-        <div v-for="(location, label, index) in locationStore.data" :key="index" class="flex flex-col">
+        <div v-for="(location, label, index) in store.locations.data" :key="index" class="flex flex-col">
             <template v-if="location.unlocked">
                 <p class="border-b-2 mb-2">{{ label }}</p>
                 <GatherButton
@@ -18,10 +18,9 @@
 </template>
 <script setup lang='ts'>
 import GatherButton from '@/components/UI/Actions/Locations/ActionsGatherButton.vue';
-import type { argShowLogInterface } from '@/models/actionInterfaces';
-import { useLocationStore } from '@/stores/locationStore';
-import { ActionStore, LogStore } from '@/stores/store';
-const locationStore = useLocationStore();
+import { mainStore } from '@/stores/mainStore';
+const store = mainStore();
+
 
 
 

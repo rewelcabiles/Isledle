@@ -1,6 +1,6 @@
 <template>
     <div id="ui_resource_summary" class="pointer-events-auto flex flex-col">
-        <div v-for="(resource, label, index) in resourceStore.unlockedResources" class="px-2">
+        <div v-for="(resource, label, index) in store.resources.store.unlockedResources" class="px-2">
             <transition name="el-fade-in-linear">
                 <template v-if="resource.unlocked">
                     <el-row class="">
@@ -21,11 +21,11 @@
 </template>
 
 <script setup lang='ts'>
-import { defineComponent } from 'vue';
-import { useResourceStore } from '@/stores/resourceStore';
 import ResourceSummaryChange from './ResourceSummaryChange.vue';
+import { mainStore } from '@/stores/mainStore';
+const store = mainStore();
 
-const resourceStore = useResourceStore();
+
 
 
 </script>

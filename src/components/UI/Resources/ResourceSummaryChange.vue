@@ -14,8 +14,9 @@
 <script setup lang="ts">
 import type { argModifyResourceInterface } from '@/models/actionInterfaces';
 import { MessageBus } from '@/models/MessageBus';
-import { ActionStore } from '@/stores/store';
 import { ref } from 'vue';
+import { mainStore } from '@/stores/mainStore';
+const store = mainStore();
 
 const props = defineProps({
     resource: {
@@ -31,7 +32,7 @@ const durationInSeconds = 3;
 const messageBus = new MessageBus({
     "modifyResource": Check
 });
-ActionStore().messageBus.attach(messageBus)
+store.actionStore.messageBus.attach(messageBus)
 
 let timer: any;
 function Check(arg: argModifyResourceInterface){

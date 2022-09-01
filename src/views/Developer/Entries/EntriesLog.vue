@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-input placeholder="Search" class="pb-5" suffix-icon="Search" v-model="searchFilter"></el-input>
-        <el-collapse v-for="(log, id, index) in logStore.data" :key="index">
+        <el-collapse v-for="(log, id, index) in store.logs.data" :key="index">
             <transition name="el-fade-in-linear">
                 <el-collapse-item v-if="log.id.includes(searchFilter)" :name="id" class="mb-2">
                     <template #title class="card-header flex flex-row">
@@ -37,14 +37,15 @@
 </template>
 
 <script setup lang="ts">
-import { LogStore } from '@/stores/store';
 import { ref } from 'vue'
 
-let logStore = LogStore();
+import { mainStore } from '@/stores/mainStore';
+const store = mainStore();
+
 let searchFilter = ref('')
 
 function deleteLog(id : string) {
-    logStore.removeLogFromData(id);
+    store.logs.store.removeLogFromData(id);
 }
 
 </script>

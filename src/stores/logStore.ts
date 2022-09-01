@@ -9,7 +9,9 @@ import type {
 } from '@/models/actionInterfaces';
 import { computed, ref } from "vue";
 import { MessageBus } from "@/models/MessageBus";
-import { ActionStore } from "./store";
+
+import { mainStore } from '@/stores/mainStore';
+
 
 
 export interface choiceInterface{
@@ -33,14 +35,10 @@ export const useLogStore = defineStore( 'logs', () => {
   const logs = ref(useStorage('logs', [] as logInterface[]))
   const data = ref(useStorage('log_data', IsledleData[dataName] as logDataInterface))
   
-  
   const messageBus = ref(new MessageBus({
     'showLog' : addLog
   }));
-  const actionStore = ActionStore();
-  actionStore.messageBus.attach(messageBus.value)
-
-
+  
 
   function getLog(id:string) {
       return data.value[id];
@@ -70,6 +68,7 @@ export const useLogStore = defineStore( 'logs', () => {
   return {
     resetData,
     createLog,
+    messageBus,
     removeLogFromData,
     data,
     logs,

@@ -4,7 +4,9 @@ import IsledleData from "@/config/IsledleData.json";
 import type { ActionInterface, argModifyResourceInterface, argSetLockResourceInterface } from "@/models/actionInterfaces";
 import { MessageBus, type actionFunctionMapInterface } from "@/models/MessageBus";
 import { computed, ref } from "vue";
-import { ActionStore } from "./store";
+import { mainStore } from '@/stores/mainStore';
+
+
 
 
 export interface resourceInterface {
@@ -25,9 +27,7 @@ export const useResourceStore = defineStore('Resource', () => {
     'modifyResource': modifyResource,
     'setLockResource': setResourceLock
   }))
-
-  const actionStore = ActionStore();
-  actionStore.messageBus.attach(messageBus.value)
+  const store = mainStore();
 
   // === COMPUTED === ///
   const isUnlocked = computed(() => Object.values(data.value).filter(resource => resource.unlocked).length > 0)
@@ -61,21 +61,12 @@ export const useResourceStore = defineStore('Resource', () => {
     }
   }
 
-  function deleteResource(resource_name: resourceInterface['name']){
-    delete data.value[resource_name];
-  }
-  function createResource(resource: resourceInterface){
-    data.value[resource.name] = resource;
-  }
-
   return {
     resetData,
     dataName,
     data,
     messageBus,
     getResource,
-    createResource,
-    deleteResource,
     unlockedResources,
     isUnlocked
   }

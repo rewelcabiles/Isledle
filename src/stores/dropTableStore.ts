@@ -2,10 +2,12 @@ import { defineStore } from "pinia";
 import { useStorage } from "@vueuse/core";
 import type { resourceInterface } from "./resourceStore";
 import { MessageBus } from "@/models/MessageBus";
-import { ActionStore, DropTableStore } from "./store";
 import IsledleData from '@/config/IsledleData.json'
 import type { argModifyResourceInterface, argRollDropTableInterface } from "@/models/actionInterfaces";
 import { ref } from "vue";
+
+import { mainStore } from '@/stores/mainStore';
+
 
 
 export interface DropTableEntryInterface{
@@ -26,12 +28,10 @@ interface dataInterface {
 export const useDropTableStore = defineStore('Drop Table', () => {
   const dataName = "dropTables"
   const data = ref(useStorage('dropTableData', IsledleData[dataName] as dataInterface));
-  const messageBus = new MessageBus({
+  const messageBus = ref(new MessageBus({
     'rollDropTable': rollDropTable
-  });
-  const actionStore = ActionStore()
-  const mainMessageBus = actionStore.messageBus;
-  mainMessageBus.attach(messageBus)
+  }));
+  const store = mainStore();
   
   function rollDropTable(args: argRollDropTableInterface){
     let droppedItems = {} as { [ key: resourceInterface['name'] ]: number };
@@ -52,7 +52,7 @@ export const useDropTableStore = defineStore('Drop Table', () => {
       if (droppedItems[key] == 0){
         return;
       }
-      mainMessageBus.notify({
+      store.actionStore.messageBus.notify({
         type: "modifyResource" ,
         args: {
           "name": key,
@@ -80,6 +80,7 @@ export const useDropTableStore = defineStore('Drop Table', () => {
     deleteEntry,
     rollDropTable,
     data,
+    messageBus,
     resetData,
     dataName,
   }

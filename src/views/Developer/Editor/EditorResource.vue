@@ -18,9 +18,8 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { ResourceStore } from '@/stores/store';
-
-const resourceStore = ResourceStore();
+import { mainStore } from '@/stores/mainStore';
+const store = mainStore();
 
 let resource_form = reactive({
     name: '',
@@ -29,7 +28,7 @@ let resource_form = reactive({
 });
 
 function addResource() {
-    resourceStore.createResource({
+    store.resources.addEntry({
         name: resource_form.name,
         stock: resource_form.stock,
         unlocked: resource_form.unlocked
@@ -43,9 +42,9 @@ function addResource() {
 let resourceExists = ref(false);
 
 function checkIfExists(){
-    if(Object.keys(resourceStore.data).includes(resource_form.name)){
+    if(Object.keys(store.resources.data).includes(resource_form.name)){
         resourceExists.value = true;
-        let existing_resource = resourceStore.data[resource_form.name];
+        let existing_resource = store.resources.data[resource_form.name];
         resource_form.name = existing_resource.name;
         resource_form.stock = existing_resource.stock;
         resource_form.unlocked = existing_resource.unlocked;

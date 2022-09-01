@@ -4,7 +4,10 @@ import type { argSetFlagInterface } from "@/models/actionInterfaces";
 import IsledleData from "@/config/IsledleData.json";
 import { ref } from "vue";
 import { MessageBus } from "@/models/MessageBus";
-import { ActionStore } from "./store";
+
+import { mainStore } from '@/stores/mainStore';
+
+
 
 interface FlagInterface {
   [key: string] : boolean
@@ -16,9 +19,7 @@ export const useProgressionStore = defineStore('Flag', () => {
   const messageBus = ref(new MessageBus({
     'setFlag': setFlag
   }));
-
-  const actionStore = ActionStore();
-  actionStore.messageBus.attach(messageBus.value)
+  const store = mainStore()
 
   function setFlag(args: argSetFlagInterface) {
     data.value[args.id] = args.value;
@@ -33,6 +34,7 @@ export const useProgressionStore = defineStore('Flag', () => {
     data,
     setFlag,
     deleteEntry,
+    messageBus,
     resetData,
     dataName
   }

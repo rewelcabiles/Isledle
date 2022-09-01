@@ -15,18 +15,16 @@
 </template>
 <script setup lang='ts'>
 import { reactive, computed } from 'vue';
-
 import ActionsHarvestResources from './Locations/ActionsLocations.vue';
-import { useResourceStore } from '@/stores/resourceStore';
-
-let resourceStore = useResourceStore();
+import { mainStore } from '@/stores/mainStore';
+const store = mainStore();
 
 
 const tabs = {
     "Locations": {
         label: 'Locations',
         component: ActionsHarvestResources,
-        visible: computed(() => resourceStore.isUnlocked),
+        visible: computed(() => store.resources.store.isUnlocked),
     },
 };
 

@@ -43,6 +43,7 @@ export const useLocationStore = defineStore('location', () => {
   return { resetData,
     deleteEntry,
     addLocation,
+    messageBus,
     data,
     dataName,
   }
