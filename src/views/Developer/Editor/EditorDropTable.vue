@@ -48,9 +48,13 @@ import {
     dropTableTableForm,
     buildForm
 } from '@/helper/formTemplates'
+import { storeToRefs } from 'pinia';
 
 
 const store = mainStore();
+
+
+dropTableTableForm.name.autocomplete = (query: string, cb: Function) => { store.resources.query(query, cb)}
 
 let form = reactive({
     id: '',

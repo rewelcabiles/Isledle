@@ -25,24 +25,14 @@ export const useLocationStore = defineStore('location', () => {
   });
 
 
-  // Developer Functions
-  function addLocation( newLocation: LocationInterface) {
-    data.value[newLocation.name] = newLocation
-  }
-
-  function deleteEntry( name: LocationInterface['name'] ){
-    console.log(name)
-    delete data.value[name]
-  }
   
 
   function resetData(){
     data.value = IsledleData[dataName] as { [key: string]: LocationInterface }
   }
 
-  return { resetData,
-    deleteEntry,
-    addLocation,
+  return {
+    resetData,
     messageBus,
     data,
     dataName,

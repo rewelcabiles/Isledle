@@ -26,6 +26,9 @@ const locationStore = useLocationStore()
 
 const form = reactive(buildForm(locationForm));
 
+locationForm.dropTable.autocomplete = (query: string, cb: Function) => { store.dropTables.query(query, cb)}
+locationForm.specialDropTable.autocomplete = (query: string, cb: Function) => { store.dropTables.query(query, cb)}
+
 function updateForm(){
     let existing = JSON.parse(JSON.stringify(store.locations.data[form.name]));
     form.name = existing.name

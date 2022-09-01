@@ -40,12 +40,14 @@ interface dataInterface {
   }
 
 export class Store{
+    
     dataName: string = ''
     defaultData: any ={}
     store: any
     actionStore: any
     globalMessageBus: MessageBus
     data: any
+
     constructor(store: any, dataName: any) {
         this.store = store
         this.dataName = dataName;
@@ -69,7 +71,7 @@ export class Store{
     }
 
     query(query: string, cb: Function){
-        const keys = Object.keys(this.data).filter( entry => entry.toLowerCase().includes(query.toLowerCase()))
+        const keys = Object.keys(this.store.data).filter( entry => entry.toLowerCase().includes(query.toLowerCase()))
         let result = [] as {}[]
         keys.forEach(entry => {
             result.push({
