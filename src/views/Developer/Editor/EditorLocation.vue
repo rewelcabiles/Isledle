@@ -1,39 +1,33 @@
 
 <template>
+    {{ store.locations.store.data }}
     <DynamicFormVue
-    :form-template="templateForm"
+    :form-template="locationForm"
     :form="form"
     :existingList="Object.keys(locationStore.data)"
     @is-updatable="updateForm"
-    @save-clicked="locationStore.addLocation(JSON.parse(JSON.stringify(form)))"
+    @save-clicked="store.locations.addEntry(JSON.parse(JSON.stringify(form)), 'name')"
     existingKey="name"/>
 </template>
 <script setup lang="ts">
 import DynamicFormVue from '@/components/Developer/DynamicForm.vue';
 import { useLocationStore } from '@/stores/locationStore';
 import { reactive, ref } from 'vue';
+import { mainStore } from '@/stores/mainStore';
 
+
+import {
+    locationForm,
+    buildForm
+} from '@/helper/formTemplates'
+const store = mainStore();
 const locationStore = useLocationStore()
 
 
-let templateForm = reactive({
-    "name": "",
-    "specialInteractName": "",
-    "dropTable": "",
-    "specialDropTable": "",
-    "unlocked": false,
-});
-
-const form = reactive({
-    name: "",
-    unlocked: false,
-    specialInteractName: "",
-    dropTable: "",
-    specialDropTable: ""
-});
+const form = reactive(buildForm(locationForm));
 
 function updateForm(){
-    let existing = JSON.parse(JSON.stringify(locationStore.data[form.name]));
+    let existing = JSON.parse(JSON.stringify(store.locations.data[form.name]));
     form.name = existing.name
     form.specialInteractName = existing.specialInteractName
     form.specialDropTable = existing.specialDropTable

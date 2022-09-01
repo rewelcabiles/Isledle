@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore, storeToRefs } from "pinia";
 import IsledleData from '@/config/IsledleData.json'
 import { useActionStore } from '@/stores/actionStore'
 import { useResourceStore } from '@/stores/resourceStore'
@@ -15,13 +15,13 @@ interface FlagInterface {
 }
 
 export const mainStore = defineStore('main', () => {
-    const actionStore = useActionStore()
+    const actionStore = ref(useActionStore())
     const flags = ref(new Store(useProgressionStore(), 'flags'))
-    const dropTables = new Store(useDropTableStore(), 'dropTables')
-    const locations = new Store(useLocationStore(), 'locations')
-    const logs = new Store(useLogStore(), 'logs')
+    const dropTables = ref(new Store(useDropTableStore(), 'dropTables'))
+    const locations = ref(new Store(useLocationStore(), 'locations'))
+    const logs = ref(new Store(useLogStore(), 'logs'))
     const resources = ref(new Store(useResourceStore(), 'resources'))
-    const gameStore = useGameStore();
+    const gameStore = ref(useGameStore())
     
     return {
         gameStore,
@@ -40,24 +40,24 @@ interface dataInterface {
   }
 
 export class Store{
-    data: any = {}
     dataName: string = ''
     defaultData: any ={}
     store: any
     actionStore: any
     globalMessageBus: MessageBus
-
+    data: any
     constructor(store: any, dataName: any) {
         this.store = store
-        this.data = store.data;
         this.dataName = dataName;
+        const { data } = storeToRefs(store)
+        this.data = data
         this.actionStore = useActionStore()
         this.globalMessageBus = this.actionStore.messageBus
         this.globalMessageBus.attach(this.store.messageBus)
     }
 
-    addEntry(args: any) {
-        this.data[args.id] = args.value;
+    addEntry(args: any, ident_property:string="id") {
+        this.data[args[ident_property]] = args; 
     }
 
     deleteEntry(entry_id: string) {
@@ -72,9 +72,9 @@ export class Store{
         const keys = Object.keys(this.data).filter( entry => entry.toLowerCase().includes(query.toLowerCase()))
         let result = [] as {}[]
         keys.forEach(entry => {
-          result.push({
-            value:entry
-          })
+            result.push({
+                value:entry
+            })
         })
         cb(result)
     }

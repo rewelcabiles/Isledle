@@ -41,6 +41,9 @@
 		"intro_1": false,
 		"intro_started": false
 	},
+	"events": {
+
+	},
 	"logs": {
 		"lg_intro_1": {
 			"id": "lg_intro_1",

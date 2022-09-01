@@ -1,17 +1,24 @@
 <template>
     <div>
         <template v-for="input, key in formTemplate">
-            <el-row class="mb-5">
+            <el-row class="mb-5" v-if="input.show != false">
                 <el-col class="pr-2 pt-1" :span="labelWidth">
                     <p class="text-sm text-right">{{ key }}</p>
                 </el-col>
                 <el-col :span="24 - labelWidth">
-                    <el-input @input="checkIfExists(key)" v-model="form[key]" v-if="(typeof input === typeof 'string')"></el-input>
-                    <el-input-number @input="checkIfExists(key)" v-model="form[key]" v-else-if="(typeof input === typeof 1)"></el-input-number>
-                    <el-select @input="checkIfExists(key)" v-model="form[key].value" v-else-if="(typeof input === typeof {})">
+                    <el-autocomplete
+                    v-if="(typeof input.initialData === typeof 'string') && input.autocomplete != null"
+                    v-model="form[key]"
+                    class="w-full"
+                    :fetch-suggestions="input.autocomplete"
+                    clearable
+                    />
+                    <el-input @input="checkIfExists(key)" v-model="form[key]" v-else-if="(typeof input.initialData === typeof 'string')"></el-input>
+                    <el-input-number @input="checkIfExists(key)" v-model="form[key]" v-else-if="(typeof input.initialData === typeof 1)"></el-input-number>
+                    <el-select @input="checkIfExists(key)" v-model="form[key].value" v-else-if="(typeof input.initialData === typeof {})">
                         <el-option v-for="(val, key, index) in input.options" :value="val"> {{ key }} </el-option>
                     </el-select>
-                    <el-switch @input="checkIfExists(key)" v-if="(typeof input === typeof true)" v-model="form[key]" active-text="True" inactive-text="False" />
+                    <el-switch @input="checkIfExists(key)" v-if="(typeof input.initialData === typeof true)" v-model="form[key]" active-text="True" inactive-text="False" />
                 </el-col>
             </el-row>
         </template>

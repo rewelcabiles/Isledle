@@ -2,12 +2,12 @@
     <div class="flex flex-col flex-grow h-100 w-100">
         <DynamicFormVue
         class="mb-5"
-        :formTemplate="idForm"
-        :form="newForm"
+        :formTemplate="dropTableIdForm"
+        :form="form"
         :existingList="Object.keys(store.dropTables.data)"
         
         existingKey="id"
-        @save-clicked="store.dropTables.store.saveDropTable(JSON.parse(JSON.stringify(newForm)))"
+        @save-clicked="store.dropTables.addEntry(JSON.parse(JSON.stringify(form)))"
         @is-updatable="updateForm()"
         >
 
@@ -19,16 +19,16 @@
 
         </DynamicFormVue>
         <div class="h-100 pt-2 pb-20">
-            <div v-for="(form, index) in newForm.table" class="py-4 border-y-2">
+            <div v-for="(dtResource, index) in form.table" class="py-4 border-y-2">
                 <DynamicFormVue
-                :form-template="form"
-                :form="form"
+                :form-template="dropTableTableForm"
+                :form="dtResource"
                 :showSave="false"
                 formKey="name">
 
                 <template v-slot:buttons>
                     <div class="flex flex-row mt-5">
-                        <el-button  @click="newForm.table.splice(index, 1)" type="danger" class="w-full" icon="Minus"> Remove Resource </el-button>
+                        <el-button  @click="form.table.splice(index, 1)" type="danger" class="w-full" icon="Minus"> Remove Resource </el-button>
                     </div>
                 </template>
 
@@ -41,33 +41,30 @@
 <script setup lang="ts">
 import type { DropTableEntryInterface } from '@/stores/dropTableStore';
 import DynamicFormVue from '@/components/Developer/DynamicForm.vue';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { mainStore } from '@/stores/mainStore';
+import {
+    dropTableIdForm,
+    dropTableTableForm,
+    buildForm
+} from '@/helper/formTemplates'
+
+
 const store = mainStore();
 
-
-let idForm = reactive({
-    id: ''
-})
-
-let newForm = reactive({
+let form = reactive({
     id: '',
     table: [] as DropTableEntryInterface[]
 });
 
 function createNewTableEntry(){
-    newForm.table.push(JSON.parse(JSON.stringify({
-        name: '',
-        maxQuantity: 1,
-        chance: 64
-    })));
+    form.table.push(buildForm(dropTableTableForm));
 }
 
-
 function updateForm(){
-    let existing = JSON.parse(JSON.stringify(store.dropTables.data[newForm.id]));
-    newForm.id = existing.id
-    newForm.table = existing.table
+    let existing = JSON.parse(JSON.stringify(store.dropTables.data[form.id]));
+    form.id = existing.id
+    form.table = existing.table
 }
 
 </script>
